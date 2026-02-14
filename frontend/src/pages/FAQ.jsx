@@ -83,7 +83,7 @@ const FAQ = () => {
             </h1>
           </div>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Find answers to common questions about FCIT Developers Club
+            Find answers to common questions about Taakra 2026
           </p>
         </motion.div>
 

@@ -52,7 +52,7 @@ const FakeErrorPage = () => {
         <div style={styles.errorIcon}>⚠️</div>
         <h1 style={styles.errorTitle}>This site can't be reached</h1>
         <div style={styles.errorMessage}>
-          <p><strong>fcit-developers.club</strong> took too long to respond.</p>
+          <p><strong>taakra2026.com</strong> took too long to respond.</p>
           <p>Try:</p>
           <ul style={styles.errorList}>
             <li>Checking the connection</li>

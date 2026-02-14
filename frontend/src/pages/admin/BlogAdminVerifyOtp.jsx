@@ -46,7 +46,7 @@ const BlogAdminVerifyOtp = () => {
         },
         withCredentials: true
       });
-      setSuccess("OTP has been sent to fcit-developers.club@pucit.edu.pk");
+      setSuccess("OTP has been sent to contact@taakra2026.com");
       setResendTimer(60); // Reset timer for 60 seconds
       toast.success("OTP sent to email");
     } catch (err) {
@@ -160,7 +160,7 @@ const BlogAdminVerifyOtp = () => {
           <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-teal-500">
             Verify Your Identity
           </h1>
-          <p className="text-gray-400">Enter the OTP sent to fcit-developers.club@pucit.edu.pk</p>
+          <p className="text-gray-400">Enter the OTP sent to contact@taakra2026.com</p>
         </div>
 
         <motion.div

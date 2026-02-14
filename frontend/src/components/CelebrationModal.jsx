@@ -59,7 +59,7 @@ const CelebrationModal = ({ isOpen, onClose }) => {
                       transition={{ delay: 0.15 }}
                       className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-blue-600 to-sky-500 text-center"
                     >
-                      Celebrating FCIT Developers Club
+                      Celebrating Taakra 2026
                     </motion.h2>
                     <SparklesIcon className="h-8 w-8 text-amber-400 animate-pulse" />
                   </div>

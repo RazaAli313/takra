@@ -26,7 +26,7 @@ async def get_contact_info(db=Depends(get_misc_db)):
         # Initialize with default values
         default_info = {
             "_id": "contact_info",
-            "email": "fcit-developers.club@pucit.edu.pk",
+            "email": "contact@taakra2026.com",
             "phone": "To be Added",
             "address": "PUCIT New Campus\nSamsani Road, Lahore",
             "updated_at": datetime.utcnow()
@@ -113,13 +113,13 @@ async def send_contact_reply(contact: ContactReply):
 
     # Create message
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"Contact Form Reply from - FCIT Developers Club"
+    msg["Subject"] = f"Contact Form Reply from - Taakra 2026"
     msg["From"] = sender_email
     msg["To"] = receiver_email
 
     # Create the plain-text version of your message
     text = f"""
-    You have received a reply from FCIT Developers Club:
+    You have received a reply from Taakra 2026:
     Query: {contact.query}
     Message: {contact.message}
     Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
@@ -208,7 +208,7 @@ def send_email_notification(contact: ContactMessage):
         )
 
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"New Contact Form Submission - FCIT Developers Club"
+    msg["Subject"] = f"New Contact Form Submission - Taakra 2026"
     msg["From"] = sender_email
     msg["To"] = receiver_email
 

@@ -15,7 +15,7 @@ from backend.middleware.auth.otp import send_otp_email
 
 SECRET_KEY = os.getenv("JWT_SECRET")
 BLOG_ADMIN_EMAILS = [
-    "fcit-developers.club@pucit.edu.pk",
+    "contact@taakra2026.com",
     "razaalipk313@gmail.com"
 ]
 

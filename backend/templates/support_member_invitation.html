@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal Invitation - Taakra 2026</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f7ff;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #0361f7 100%);
+            padding: 35px 20px;
+            text-align: center;
+        }
+        .logo-container {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            letter-spacing: 0.5px;
+        }
+        .header h1 {
+            color: white;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 35px;
+        }
+        .details {
+            background-color: #f8fafc;
+            border-left: 5px solid #3b82f6;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .details p { margin: 12px 0; }
+        .password-box {
+            background: #1e40af;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 16px 24px;
+            border-radius: 8px;
+            text-align: center;
+            letter-spacing: 2px;
+            margin: 20px 0;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e40af 0%, #0361f7 100%);
+            color: white !important;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 0.95em;
+            color: #888;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <span class="logo">Taakra 2026</span>
+            </div>
+            <h1>Admin Portal Invitation</h1>
+        </div>
+        <div class="content">
+            <p>Hi {{ name }},</p>
+            <p>You have been added as a <strong>Support Member (Admin)</strong> for Taakra 2026. You can log in to the admin panel using the credentials below.</p>
+            <div class="details">
+                <p><strong>Login URL:</strong> <a href="{{ login_url }}">{{ login_url }}</a></p>
+                <p><strong>Email:</strong> {{ email }}</p>
+                <p><strong>Your temporary password:</strong></p>
+                <div class="password-box">{{ password }}</div>
+                <p style="font-size: 14px; color: #64748b;">Please change this password after your first login if the admin panel supports it. Keep this email secure.</p>
+            </div>
+            <p>
+                <a href="{{ login_url }}" class="btn">Log in to Admin Portal</a>
+            </p>
+        </div>
+        <div class="footer">
+            &copy; {{ year }} Taakra 2026. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

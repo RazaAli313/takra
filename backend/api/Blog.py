@@ -28,7 +28,7 @@ async def send_comment_notification_email(post_title: str, commenter_name: str, 
     
     # Recipient emails
     recipient_emails = [
-        "fcit-developers.club@pucit.edu.pk",
+        os.getenv("ADMIN_EMAIL", "contact@taakra2026.com"),
         "razaalipk313@gmail.com"
     ]
     
@@ -67,7 +67,7 @@ async def send_comment_notification_email(post_title: str, commenter_name: str, 
     
     # Create plain text version
     text = f"""
-    New Blog Comment Received - FCIT Developers Club
+    New Blog Comment Received - Taakra 2026
     
     Blog Post: {post_title}
     Commenter: {commenter_name} ({commenter_email})
@@ -81,7 +81,7 @@ async def send_comment_notification_email(post_title: str, commenter_name: str, 
     # Send email to each recipient
     for receiver_email in recipient_emails:
         msg = MIMEMultipart("alternative")
-        msg["Subject"] = f"New Blog Comment: {post_title} - FCIT Developers Club"
+        msg["Subject"] = f"New Blog Comment: {post_title} - Taakra 2026"
         msg["From"] = sender_email
         msg["To"] = receiver_email
         
@@ -166,7 +166,7 @@ async def create_blog_post(
         #         <p>Description: {excerpt}</p>
         #         <a href='https://fdc-pucit.vercel.app/blogs/{blog_id}'>Read the Blog</a>
         #         <div style='margin-top:32px;font-size:0.9em;color:#888;'>
-        #             &copy; {datetime.now().year} FCIT Developers Club. All rights reserved.
+        #             &copy; {datetime.now().year} Taakra 2026. All rights reserved.
         #         </div>
         #     </body>
         #     </html>
@@ -184,7 +184,7 @@ async def create_blog_post(
         #         year=datetime.now().year
         #     )
         # msg = MIMEMultipart("alternative")
-        # msg["Subject"] = f"New Blog Published: {title} - FCIT Developers Club"
+        # msg["Subject"] = f"New Blog Published: {title} - Taakra 2026"
         # msg["From"] = sender_email
         # msg["To"] = receiver_email
         # text = f"New blog published: {title}\nDescription: {excerpt}\nRead: https://fdc-pucit.vercel.app/blogs/{blog_id}"
@@ -711,7 +711,7 @@ async def approve_blog_submission(
                 <p>Description: {submission['excerpt']}</p>
                 <a href='https://fdc-pucit.vercel.app/blogs/{blog_id}'>Read the Blog</a>
                 <div style='margin-top:32px;font-size:0.9em;color:#888;'>
-                    &copy; {datetime.now().year} FCIT Developers Club. All rights reserved.
+                    &copy; {datetime.now().year} Taakra 2026. All rights reserved.
                 </div>
             </body>
             </html>
@@ -729,7 +729,7 @@ async def approve_blog_submission(
                 year=datetime.now().year
             )
         msg = MIMEMultipart("alternative")
-        msg["Subject"] = f"New Blog Published: {submission['title']} - FCIT Developers Club"
+        msg["Subject"] = f"New Blog Published: {submission['title']} - Taakra 2026"
         msg["From"] = sender_email
         msg["To"] = receiver_email
         text = f"New blog published: {submission['title']}\nDescription: {submission['excerpt']}\nRead: https://fdc-pucit.vercel.app/blogs/{blog_id}"
