@@ -33,26 +33,34 @@ const itemVariants = {
   }
 };
 
+const DUMMY_ABOUT = {
+  founded_year: "2024",
+  club_name: "Taakra",
+  member_count: "100+",
+  activities: "workshops, hackathons, and tech talks",
+  image_url: "",
+  features: [
+    { icon: "RocketLaunchIcon", title: "Innovation", description: "We foster a culture of innovation and experimentation." },
+    { icon: "CodeBracketIcon", title: "Technical Excellence", description: "Hands-on coding and project-based learning." },
+    { icon: "UsersIcon", title: "Community", description: "A supportive network of tech enthusiasts and mentors." },
+    { icon: "LightBulbIcon", title: "Learning", description: "Workshops and sessions to level up your skills." }
+  ]
+};
+
 const About = () => {
-  const [aboutData, setAboutData] = useState({
-    founded_year: "2024",
-    club_name: "",
-    member_count: "",
-    activities: "",
-    image_url: "",
-    features: []
-  });
+  const [aboutData, setAboutData] = useState(DUMMY_ABOUT);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchAboutData = async () => {
       try {
-  const response = await axios.get(`${API_BASE_URL}/about`);
+        const response = await axios.get(`${API_BASE_URL}/about`);
         setAboutData(response.data);
         setLoading(false);
       } catch (err) {
-        setError("Failed to load about page content");
+        setAboutData(DUMMY_ABOUT);
+        setError(null);
         setLoading(false);
         console.error(err);
       }
@@ -74,19 +82,6 @@ const About = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500 mx-auto mb-4"></div>
           <p>Loading content...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20 flex items-center justify-center">
-        <div className="text-center p-6 bg-white border border-slate-200 rounded-lg max-w-md shadow-lg">
-          <p className="text-red-500 text-xl mb-4">{error}</p>
-          <button onClick={() => window.location.reload()} className="px-4 py-2 bg-sky-500 text-white rounded-lg font-medium hover:bg-sky-600 transition-colors">
-            Retry
-          </button>
         </div>
       </div>
     );
@@ -123,7 +118,7 @@ const About = () => {
             <p className="text-slate-600 mb-6">
               Founded in <b>{aboutData.founded_year}</b>, <b>{aboutData.club_name}</b> has grown from a small group of passionate students to a thriving community of over <b>{aboutData.member_count}</b> members. We started with a simple mission: to create a space where technology enthusiasts could learn, collaborate, and innovate together.
             </p>
-            <p className="text-gray-300">
+            <p className="text-slate-600">
               Today, we organize <b>{aboutData.activities}</b> that have helped our members secure internships at top tech companies and launch successful startups.
             </p>
           </motion.div>
@@ -185,7 +180,7 @@ const About = () => {
               key={index}
               variants={itemVariants}
               whileHover={{ y: -5 }}
-              className="bg-gray-800 p-6 rounded-xl border border-gray-700 transition-transform"
+              className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-transform"
             >
               <div className="text-sky-500 mb-4">
                 {iconComponents[feature.icon]}

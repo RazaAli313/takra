@@ -62,20 +62,20 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }) => {
         variants={modalVariants}
         initial="hidden"
         animate="visible"
-        className="bg-gray-800 rounded-xl p-6 border border-gray-700 w-full max-w-md"
+        className="bg-white rounded-xl p-6 border border-slate-200 shadow-lg w-full max-w-md"
       >
-        <h3 className="text-xl font-bold mb-4">Confirm Deletion</h3>
-        <p className="text-gray-300 mb-6">{message}</p>
+        <h3 className="text-xl font-bold mb-4 text-slate-800">Confirm Deletion</h3>
+        <p className="text-slate-600 mb-6">{message}</p>
         
         <div className="flex justify-end space-x-3">
           <button
-            className="px-4 py-2 bg-gray-700 rounded-lg text-white font-medium hover:bg-gray-600 transition-colors"
+            className="px-4 py-2 bg-slate-200 rounded-lg text-slate-800 font-medium hover:bg-slate-300 transition-colors"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="px-4 py-2 bg-red-600 rounded-lg text-white font-medium hover:bg-red-700 transition-colors"
+            className="px-4 py-2 bg-red-500 rounded-lg text-white font-medium hover:bg-red-600 transition-colors"
             onClick={onConfirm}
           >
             Delete

@@ -203,7 +203,16 @@ const Team = () => {
         setAdvisors(advisorsData);
       } catch (error) {
         console.error('Error fetching team data:', error);
-        setTeamMembers([]);
+        setTeamMembers([{
+          id: 'dummy-1',
+          name: 'Taakra Team',
+          role: 'Core Team',
+          tenure: new Date().getFullYear() + '-' + (new Date().getFullYear() + 1),
+          image_url: '',
+          bio: 'Our team drives innovation and community at Taakra. Content will load from the server when available.',
+          order_by_tenure: {},
+          socials: {}
+        }]);
         setAdvisors([]);
       } finally {
         setIsLoading(false);

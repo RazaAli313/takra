@@ -104,7 +104,7 @@ const AdminDashboard = () => {
             Admin Dashboard
           </span>
         </h1>
-        <p className="text-slate-400 max-w-2xl mx-auto">
+        <p className="text-slate-600 max-w-2xl mx-auto">
           Welcome back! Here's what's happening with Taakra today.
         </p>
       </motion.div>
@@ -112,30 +112,30 @@ const AdminDashboard = () => {
       {metrics && (
         <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <motion.div variants={itemVariants}>
-            <div className="bg-slate-800/80 rounded-xl p-6 border border-sky-500/30 h-full">
-              <p className="text-slate-400 text-sm">Total Registrations</p>
-              <h3 className="text-2xl font-bold mt-1 text-white">{metrics.total_registrations}</h3>
+            <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm h-full">
+              <p className="text-slate-600 text-sm">Total Registrations</p>
+              <h3 className="text-2xl font-bold mt-1 text-slate-800">{metrics.total_registrations}</h3>
               <p className="text-sm text-slate-500 mt-2">Last 7 days: {metrics.registrations_last_7_days}</p>
             </div>
           </motion.div>
           <motion.div variants={itemVariants}>
-            <div className="bg-slate-800/80 rounded-xl p-6 border border-sky-500/30 h-full">
-              <p className="text-slate-400 text-sm">Configured Positions</p>
-              <h3 className="text-2xl font-bold mt-1 text-white">{metrics.positions_count}</h3>
+            <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm h-full">
+              <p className="text-slate-600 text-sm">Configured Positions</p>
+              <h3 className="text-2xl font-bold mt-1 text-slate-800">{metrics.positions_count}</h3>
               <p className="text-sm text-slate-500 mt-2">Without picture: {metrics.registrations_without_picture}</p>
             </div>
           </motion.div>
           <motion.div variants={itemVariants}>
-            <div className="bg-slate-800/80 rounded-xl p-6 border border-sky-500/30 h-full">
-              <p className="text-slate-400 text-sm">Recent Registrations</p>
-              <h3 className="text-2xl font-bold mt-1 text-white">{metrics.recent_registrations.length}</h3>
+            <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm h-full">
+              <p className="text-slate-600 text-sm">Recent Registrations</p>
+              <h3 className="text-2xl font-bold mt-1 text-slate-800">{metrics.recent_registrations.length}</h3>
               <p className="text-sm text-slate-500 mt-2">Latest 5 applicants</p>
             </div>
           </motion.div>
           <motion.div variants={itemVariants}>
-            <div className="bg-slate-800/80 rounded-xl p-6 border border-sky-500/30 h-full">
-              <p className="text-slate-400 text-sm">Trend (7 days)</p>
-              <h3 className="text-2xl font-bold mt-1 text-white">{metrics.daily_trend_last_7_days.reduce((s, d) => s + d.count, 0)}</h3>
+            <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm h-full">
+              <p className="text-slate-600 text-sm">Trend (7 days)</p>
+              <h3 className="text-2xl font-bold mt-1 text-slate-800">{metrics.daily_trend_last_7_days.reduce((s, d) => s + d.count, 0)}</h3>
               <p className="text-sm text-slate-500 mt-2">Total last 7 days</p>
             </div>
           </motion.div>
@@ -144,19 +144,19 @@ const AdminDashboard = () => {
 
       {/* Positions by count (simple bar chart) */}
       {metrics && metrics.registrations_by_position && metrics.registrations_by_position.length > 0 && (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-slate-800/80 rounded-xl p-6 border border-sky-500/30">
-          <h2 className="text-xl font-bold mb-4 text-white">Registrations by Position</h2>
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+          <h2 className="text-xl font-bold mb-4 text-slate-800">Registrations by Position</h2>
           <div className="space-y-3">
             {metrics.registrations_by_position.slice(0, 8).map((p, idx) => {
               const max = metrics.registrations_by_position[0]?.count || 1;
               const pct = Math.round((p.count / Math.max(1, max)) * 100);
               return (
                 <div key={idx} className="flex items-center gap-4">
-                  <div className="w-48 text-sm text-slate-300">{p.position}</div>
-                  <div className="flex-1 bg-slate-700 rounded overflow-hidden h-6">
+                  <div className="w-48 text-sm text-slate-600">{p.position}</div>
+                  <div className="flex-1 bg-slate-100 rounded overflow-hidden h-6">
                     <div className="bg-gradient-to-r from-sky-500 to-blue-600 h-6" style={{ width: `${pct}%` }} />
                   </div>
-                  <div className="w-12 text-right text-sm text-slate-300">{p.count}</div>
+                  <div className="w-12 text-right text-sm text-slate-600">{p.count}</div>
                 </div>
               );
             })}
@@ -166,18 +166,18 @@ const AdminDashboard = () => {
 
       {/* Recent Registrations list with quick actions */}
       {metrics && metrics.recent_registrations && (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-slate-800/80 rounded-xl p-6 border border-sky-500/30">
-          <h2 className="text-xl font-bold mb-4 text-white">Recent Registrations</h2>
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+          <h2 className="text-xl font-bold mb-4 text-slate-800">Recent Registrations</h2>
           <div className="space-y-2">
             {metrics.recent_registrations.map((r) => (
-              <div key={r.id} className="flex items-center justify-between p-3 bg-slate-900/80 rounded-lg border border-slate-700">
+              <div key={r.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
                 <div>
-                  <div className="font-medium text-white">{r.name} <span className="text-slate-400 text-sm">• {r.position_applied || 'N/A'}</span></div>
-                  <div className="text-sm text-slate-400">{r.email} • {new Date(r.created_at).toLocaleString()}</div>
+                  <div className="font-medium text-slate-800">{r.name} <span className="text-slate-500 text-sm">• {r.position_applied || 'N/A'}</span></div>
+                  <div className="text-sm text-slate-600">{r.email} • {new Date(r.created_at).toLocaleString()}</div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button onClick={() => openDetail(r)} className="px-3 py-1 bg-sky-600 hover:bg-sky-500 rounded text-sm text-white">View</button>
-                  <a href={`${API_BASE_URL}/registrations/export`} className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 rounded text-sm text-white" target="_blank" rel="noreferrer">Export CSV</a>
+                  <button onClick={() => openDetail(r)} className="px-3 py-1 bg-sky-500 hover:bg-sky-600 rounded text-sm text-white">View</button>
+                  <a href={`${API_BASE_URL}/registrations/export`} className="px-3 py-1 bg-emerald-500 hover:bg-emerald-600 rounded text-sm text-white" target="_blank" rel="noreferrer">Export CSV</a>
                 </div>
               </div>
             ))}
@@ -210,14 +210,14 @@ const AdminDashboard = () => {
         {stats.map((stat, index) => (
           <motion.div key={index} variants={itemVariants}>
             <Link to={stat.link} className="block">
-              <div className="bg-slate-800/80 rounded-xl p-6 border border-sky-500/30 hover:border-sky-400 transition-colors h-full">
+              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:border-sky-200 transition-colors h-full">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-slate-400 text-sm">{stat.title}</p>
-                    <h3 className="text-2xl font-bold mt-1 text-white">{stat.value}</h3>
+                    <p className="text-slate-600 text-sm">{stat.title}</p>
+                    <h3 className="text-2xl font-bold mt-1 text-slate-800">{stat.value}</h3>
                     <p className="text-sm text-slate-500 mt-2">{stat.change}</p>
                   </div>
-                  <div className="p-3 rounded-full bg-gradient-to-r from-sky-600 to-blue-600 text-white">
+                  <div className="p-3 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 text-white">
                     {stat.icon}
                   </div>
                 </div>
@@ -232,10 +232,10 @@ const AdminDashboard = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="bg-gray-800 rounded-xl p-6 border border-gray-700"
+        className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm"
       >
-        <h2 className="text-xl font-bold mb-6 flex items-center">
-          <RocketLaunchIcon className="h-5 w-5 mr-2 text-blue-400" />
+        <h2 className="text-xl font-bold mb-6 flex items-center text-slate-800">
+          <RocketLaunchIcon className="h-5 w-5 mr-2 text-sky-500" />
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

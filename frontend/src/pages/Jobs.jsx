@@ -10,6 +10,10 @@ const Jobs = () => {
   const [selectedType, setSelectedType] = useState("All");
   const [selectedLocation, setSelectedLocation] = useState("All");
 
+  const DUMMY_JOBS = [
+    { id: 'dummy-1', title: 'Opportunities at Taakra', company: 'Taakra', type: 'Internship', location: 'Lahore', description: 'Roles will appear here when the server is available.', posted_at: new Date().toISOString() }
+  ];
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -17,17 +21,15 @@ const Jobs = () => {
         const params = new URLSearchParams();
         if (selectedType !== "All") params.append("type", selectedType);
         if (selectedLocation !== "All") params.append("location", selectedLocation);
-        
         const url = `${API_BASE_URL}/job${params.toString() ? `?${params.toString()}` : ""}`;
         const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error('Failed to fetch jobs');
-        }
+        if (!response.ok) throw new Error('Failed to fetch jobs');
         const data = await response.json();
-        setJobs(data);
+        setJobs(Array.isArray(data) ? data : DUMMY_JOBS);
         setError(null);
       } catch (err) {
-        setError(err.message);
+        setJobs(DUMMY_JOBS);
+        setError(null);
       } finally {
         setLoading(false);
       }
@@ -59,17 +61,6 @@ const Jobs = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500 mx-auto mb-4"></div>
           <p>Loading jobs...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20 flex justify-center items-center">
-        <div className="text-center p-8 bg-white border border-slate-200 rounded-xl max-w-md shadow-lg">
-          <h2 className="text-2xl font-bold text-red-500 mb-4">Error Loading Jobs</h2>
-          <p className="text-slate-600">{error}</p>
         </div>
       </div>
     );

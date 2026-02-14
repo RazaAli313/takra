@@ -104,20 +104,20 @@ const AdminContact = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+      <div className="flex justify-center items-center min-h-[40vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500"></div>
       </div>
     );
   }
 
   if (error && !isEditing) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="bg-red-900/20 border border-red-700 rounded-lg p-6 max-w-md text-center">
-          <p className="text-red-400 text-lg mb-4">{error}</p>
+      <div className="flex justify-center items-center min-h-[40vh]">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md text-center">
+          <p className="text-red-600 text-lg mb-4">{error}</p>
           <button 
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-purple-600 rounded-lg text-white font-medium hover:bg-purple-700 transition"
+            className="px-4 py-2 bg-sky-500 rounded-lg text-white font-medium hover:bg-sky-600 transition"
           >
             Retry
           </button>
@@ -135,11 +135,11 @@ const AdminContact = () => {
         className="text-center mb-8"
       >
         <h1 className="text-3xl md:text-4xl font-bold mb-2">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-blue-600">
             Manage Contact Info
           </span>
         </h1>
-        <p className="text-gray-300 max-w-2xl mx-auto">
+        <p className="text-slate-600 max-w-2xl mx-auto">
           Update the contact information displayed on the website
         </p>
       </motion.div>
@@ -148,17 +148,17 @@ const AdminContact = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg"
+        className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm"
       >
         <motion.div 
           variants={itemVariants}
           className="flex justify-between items-center mb-6"
         >
-          <h2 className="text-2xl font-bold">Contact Information</h2>
+          <h2 className="text-2xl font-bold text-slate-800">Contact Information</h2>
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg text-white font-medium transition-all duration-150"
+            className="flex items-center px-4 py-2 bg-gradient-to-r from-sky-500 to-blue-600 rounded-lg text-white font-medium transition-all duration-150"
             onClick={handleEdit}
           >
             <PencilIcon className="h-5 w-5 mr-2" />
@@ -168,30 +168,30 @@ const AdminContact = () => {
 
         <motion.div variants={containerVariants} className="space-y-6">
           <motion.div variants={itemVariants} className="flex items-start">
-            <div className="text-purple-400 mr-4 mt-1">
+            <div className="text-sky-500 mr-4 mt-1">
               <EnvelopeIcon className="h-6 w-6" />
             </div>
             <div>
-              <h3 className="font-semibold mb-1">Email</h3>
-              <p className="text-gray-300">{contactInfo.email}</p>
+              <h3 className="font-semibold mb-1 text-slate-800">Email</h3>
+              <p className="text-slate-600">{contactInfo.email}</p>
             </div>
           </motion.div>
           <motion.div variants={itemVariants} className="flex items-start">
-            <div className="text-purple-400 mr-4 mt-1">
+            <div className="text-sky-500 mr-4 mt-1">
               <PhoneIcon className="h-6 w-6" />
             </div>
             <div>
               <h3 className="font-semibold mb-1">Phone</h3>
-              <p className="text-gray-300">{contactInfo.phone}</p>
+              <p className="text-slate-600">{contactInfo.phone}</p>
             </div>
           </motion.div>
           <motion.div variants={itemVariants} className="flex items-start">
-            <div className="text-purple-400 mr-4 mt-1">
+            <div className="text-sky-500 mr-4 mt-1">
               <MapPinIcon className="h-6 w-6" />
             </div>
             <div>
               <h3 className="font-semibold mb-1">Address</h3>
-              <p className="text-gray-300 whitespace-pre-line">{contactInfo.address}</p>
+              <p className="text-slate-600 whitespace-pre-line">{contactInfo.address}</p>
             </div>
           </motion.div>
         </motion.div>
@@ -208,13 +208,13 @@ const AdminContact = () => {
             variants={modalVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gray-800 rounded-xl p-6 border border-gray-700 w-full max-w-md"
+            className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm w-full max-w-md"
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-bold">Edit Contact Info</h3>
               <button 
                 onClick={() => setIsEditing(false)} 
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-slate-600 hover:text-white transition-colors"
               >
                 <XMarkIcon className="h-6 w-6" />
               </button>
@@ -236,13 +236,13 @@ const AdminContact = () => {
                 initial="hidden"
                 animate="visible"
               >
-                <label className="block text-gray-400 mb-2">Email</label>
+                <label className="block text-slate-600 mb-2">Email</label>
                 <input
                   type="email"
                   name="email"
                   value={editData.email || ""}
                   onChange={handleChange}
-                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors"
                   required
                 />
               </motion.div>
@@ -253,13 +253,13 @@ const AdminContact = () => {
                 animate="visible"
                 transition={{ delay: 0.05 }}
               >
-                <label className="block text-gray-400 mb-2">Phone</label>
+                <label className="block text-slate-600 mb-2">Phone</label>
                 <input
                   type="text"
                   name="phone"
                   value={editData.phone || ""}
                   onChange={handleChange}
-                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors"
                   required
                 />
               </motion.div>
@@ -270,13 +270,13 @@ const AdminContact = () => {
                 animate="visible"
                 transition={{ delay: 0.1 }}
               >
-                <label className="block text-gray-400 mb-2">Address</label>
+                <label className="block text-slate-600 mb-2">Address</label>
                 <textarea
                   name="address"
                   value={editData.address || ""}
                   onChange={handleChange}
                   rows="3"
-                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors"
                   required
                 />
               </motion.div>
@@ -287,7 +287,7 @@ const AdminContact = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="button"
-                className="px-4 py-2 bg-gray-700 rounded-lg text-white font-medium transition-all duration-150"
+                className="px-4 py-2 bg-slate-200 rounded-lg text-white font-medium transition-all duration-150"
                 onClick={() => setIsEditing(false)}
               >
                 Cancel
@@ -296,7 +296,7 @@ const AdminContact = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="button"
-                className="flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg text-white font-medium transition-all duration-150"
+                className="flex items-center px-4 py-2 bg-gradient-to-r from-sky-500 to-blue-600 rounded-lg text-white font-medium transition-all duration-150"
                 onClick={handleSave}
               >
                 <CheckIcon className="h-5 w-5 mr-2" />

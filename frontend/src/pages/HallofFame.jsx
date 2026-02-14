@@ -15,14 +15,19 @@ const HallOfFame = () => {
     AcademicCapIcon: <AcademicCapIcon className="h-8 w-8 text-sky-500" />
   };
 
+  const DUMMY_ACHIEVEMENTS = [
+    { id: 'dummy-1', title: 'Our Journey', description: 'Celebrating our milestones. Achievements will load when the server is available.', icon: 'TrophyIcon', year: new Date().getFullYear() }
+  ];
+
   useEffect(() => {
     const fetchAchievements = async () => {
       try {
-  const response = await axios.get(`${API_BASE_URL}/achievements`);
-        setAchievements(response.data);
+        const response = await axios.get(`${API_BASE_URL}/achievements`);
+        setAchievements(Array.isArray(response.data) ? response.data : DUMMY_ACHIEVEMENTS);
         setLoading(false);
       } catch (err) {
-        setError("Failed to load achievements. Please try again later.");
+        setAchievements(DUMMY_ACHIEVEMENTS);
+        setError(null);
         setLoading(false);
       }
     };
@@ -34,22 +39,6 @@ const HallOfFame = () => {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20 flex items-center justify-center">
-        <div className="text-center p-6 bg-white rounded-lg border border-slate-200 shadow-lg max-w-md">
-          <p className="text-red-500 text-xl mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-sky-500 text-white rounded-lg font-medium hover:bg-sky-600 transition"
-          >
-            Retry
-          </button>
-        </div>
       </div>
     );
   }

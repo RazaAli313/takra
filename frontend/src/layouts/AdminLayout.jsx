@@ -78,29 +78,29 @@ const AdminLayout = () => {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-950 via-slate-900 to-blue-950">
+      <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
         <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-400" />
-          <p className="text-slate-400 text-sm">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500" />
+          <p className="text-slate-600 text-sm">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-950 via-slate-900 to-blue-950 text-white">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-800">
       <div className="flex">
-        {/* Sidebar - Taakra theme */}
+        {/* Sidebar - Takra theme (light, matches public) */}
         <motion.div 
           initial={{ x: -300 }}
           animate={{ x: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="hidden md:flex flex-col w-64 h-screen fixed border-r border-sky-500/20 bg-slate-800/90 backdrop-blur"
+          className="hidden md:flex flex-col w-64 h-screen fixed border-r border-slate-200 bg-white shadow-sm"
         >
-          <div className="p-4 border-b border-sky-500/20">
+          <div className="p-4 border-b border-slate-200">
             <div className="flex items-center gap-3">
-              <img src="/takra.png" alt="Taakra" className="h-10 w-10 rounded-full border-2 border-sky-400/80" />
-              <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-blue-400 to-sky-500">
+              <img src="/takra.png" alt="Taakra" className="h-10 w-10 rounded-full border-2 border-sky-400 bg-white shadow-sm" />
+              <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-blue-600">
                 Taakra 2026
               </h1>
             </div>
@@ -117,8 +117,8 @@ const AdminLayout = () => {
                   to={item.path}
                   className={`flex items-center p-3 rounded-lg transition-colors ${
                     location.pathname === item.path
-                      ? "bg-gradient-to-r from-sky-600 to-blue-600 text-white shadow-lg shadow-sky-500/20"
-                      : "text-slate-300 hover:bg-slate-700/80 hover:text-sky-200"
+                      ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md"
+                      : "text-slate-600 hover:bg-sky-50 hover:text-sky-600"
                   }`}
                 >
                   <span className="mr-3">{item.icon}</span>
@@ -130,7 +130,7 @@ const AdminLayout = () => {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center w-full p-3 rounded-lg text-slate-300 hover:bg-slate-700/80 hover:text-sky-200"
+                className="flex items-center w-full p-3 rounded-lg text-slate-600 hover:bg-sky-50 hover:text-sky-600"
                 onClick={() => navigate("/fake/delegations")}
               >
                 <FileEditIcon className="h-5 w-5 mr-3" />
@@ -139,12 +139,12 @@ const AdminLayout = () => {
             )}
           </nav>
           
-          <div className="p-4 border-t border-sky-500/20">
+          <div className="p-4 border-t border-slate-200">
             {hasPermission("settings") && (
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center w-full p-3 rounded-lg text-slate-300 hover:bg-slate-700/80 hover:text-sky-200"
+                className="flex items-center w-full p-3 rounded-lg text-slate-600 hover:bg-sky-50 hover:text-sky-600"
                 onClick={() => navigate("/fake/settings")}
               >
                 <SettingsIcon className="h-5 w-5 mr-3" />
@@ -156,7 +156,7 @@ const AdminLayout = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={onLogout}
-              className="flex items-center w-full p-3 rounded-lg text-slate-300 hover:bg-slate-700/80 hover:text-red-300 mt-2"
+              className="flex items-center w-full p-3 rounded-lg text-slate-600 hover:bg-red-50 hover:text-red-600 mt-2"
             >
               <LogOutIcon className="h-5 w-5 mr-3" />
               Logout
@@ -171,7 +171,7 @@ const AdminLayout = () => {
 
         {/* Main content */}
         <div className="flex-1 md:ml-64 min-h-screen">
-          <main className="p-6 text-slate-200">
+          <main className="p-6 text-slate-800">
             <Outlet />
           </main>
         </div>

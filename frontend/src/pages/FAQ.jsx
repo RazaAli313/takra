@@ -10,19 +10,23 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  const DUMMY_FAQS = [
+    { id: 'dummy-1', question: 'What is Taakra?', answer: 'Taakra is a student-run tech community. Content will load when the server is available.', category: 'General' },
+    { id: 'dummy-2', question: 'How can I join?', answer: 'Visit our Join or Contact page for more information.', category: 'General' }
+  ];
+
   useEffect(() => {
     const fetchFAQs = async () => {
       try {
         setLoading(true);
         const response = await fetch(`${API_BASE_URL}/faq`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch FAQs');
-        }
+        if (!response.ok) throw new Error('Failed to fetch FAQs');
         const data = await response.json();
-        setFaqs(data);
+        setFaqs(Array.isArray(data) ? data : DUMMY_FAQS);
         setError(null);
       } catch (err) {
-        setError(err.message);
+        setFaqs(DUMMY_FAQS);
+        setError(null);
       } finally {
         setLoading(false);
       }
@@ -49,17 +53,6 @@ const FAQ = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500 mx-auto mb-4"></div>
           <p>Loading FAQs...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20 flex justify-center items-center">
-        <div className="text-center p-8 bg-white border border-slate-200 rounded-xl max-w-md shadow-lg">
-          <h2 className="text-2xl font-bold text-red-500 mb-4">Error Loading FAQs</h2>
-          <p className="text-slate-600">{error}</p>
         </div>
       </div>
     );

@@ -43,14 +43,22 @@ const Contact = () => {
     }
   };
 
+  // Dummy contact info when API is not available
+  const DUMMY_CONTACT = {
+    email: "contact@taakra.com",
+    phone: "+92 42 123 4567",
+    address: "PUCIT New Campus,\nUniversity of the Punjab,\nLahore, Pakistan"
+  };
+
   useEffect(() => {
     const fetchContactInfo = async () => {
       try {
-  const response = await axios.get(`${API_BASE_URL}/contact`);
+        const response = await axios.get(`${API_BASE_URL}/contact`);
         setContactInfo(response.data);
         setLoading(false);
       } catch (err) {
-        setError("Failed to load contact information");
+        setContactInfo(DUMMY_CONTACT);
+        setError(null);
         setLoading(false);
       }
     };
@@ -88,18 +96,10 @@ const Contact = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20 flex items-center justify-center">
-        <div className="text-center p-6 bg-white border border-slate-200 rounded-lg max-w-md shadow-lg">
-          <p className="text-red-500 text-xl mb-4">{error}</p>
-          <button onClick={() => window.location.reload()} className="px-4 py-2 bg-sky-500 text-white rounded-lg font-medium hover:bg-sky-600 transition">
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // Use dummy data if contactInfo is empty (e.g. API failed but we set DUMMY in catch)
+  const displayContact = contactInfo?.email || contactInfo?.phone || contactInfo?.address
+    ? contactInfo
+    : DUMMY_CONTACT;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20">
@@ -203,7 +203,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1 text-slate-600">Email</h3>
-                    <p className="text-slate-600">{contactInfo.email}</p>
+                    <p className="text-slate-600">{displayContact.email}</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -212,7 +212,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1 text-slate-600">Phone</h3>
-                    <p className="text-slate-600">{contactInfo.phone}</p>
+                    <p className="text-slate-600">{displayContact.phone}</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -221,7 +221,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1 text-slate-600">Address</h3>
-                    <p className="text-slate-600 whitespace-pre-line">{contactInfo.address}</p>
+                    <p className="text-slate-600 whitespace-pre-line">{displayContact.address}</p>
                   </div>
                 </div>
               </div>

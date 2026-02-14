@@ -60,6 +60,15 @@ const Events = () => {
           }
         }
       } catch (error) {
+        setEvents([{
+          id: 'dummy-1',
+          title: 'Upcoming Event',
+          description: 'Event details will appear here when the server is available.',
+          start_date: new Date().toISOString(),
+          end_date: new Date().toISOString(),
+          registration_open: false,
+          modules: []
+        }]);
         setIsLoading(false);
       }
     };
