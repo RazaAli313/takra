@@ -6,7 +6,7 @@ This RAG (Retrieval-Augmented Generation) chatbot uses Qdrant vector database an
 
 1. **Qdrant Vector Database**: You need to have Qdrant running. You can either:
    - Run Qdrant locally using Docker: `docker run -p 6333:6333 qdrant/qdrant`
-   - Use Qdrant Cloud (update the URL in the code)
+   - Use Qdrant Cloud (set QDRANT_URL and QDRANT_API_KEY environment variables)
 
 2. **Google Gemini API Key**: Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
 
@@ -17,13 +17,21 @@ This RAG (Retrieval-Augmented Generation) chatbot uses Qdrant vector database an
    pip install -r ../requirements.txt
    ```
 
-2. **Set Environment Variable**:
-   Add your Gemini API key to your `.env` file:
+2. **Set Environment Variables**:
+   Add your API keys to your `.env` file:
    ```
    GEMINI_API_KEY=your_gemini_api_key_here
+   QDRANT_URL=https://your-cluster-id.region.aws.cloud.qdrant.io:6333
+   QDRANT_API_KEY=your_qdrant_api_key_here
+   ```
+   
+   **For local Qdrant** (no API key needed):
+   ```
+   GEMINI_API_KEY=your_gemini_api_key_here
+   QDRANT_URL=http://localhost:6333
    ```
 
-3. **Start Qdrant** (if running locally):
+3. **Start Qdrant** (only if running locally):
    ```bash
    docker run -p 6333:6333 qdrant/qdrant
    ```
@@ -80,11 +88,18 @@ Check if the chatbot service is running properly.
 
 ## Configuration
 
-You can customize the chatbot by modifying the initialization parameters in `chatbot.py`:
+You can customize the chatbot by setting environment variables or modifying the initialization parameters in `chatbot.py`:
 
-- `qdrant_url`: Qdrant server URL (default: "http://localhost:6333")
+**Environment Variables:**
+- `GEMINI_API_KEY`: Google Gemini API key (required)
+- `QDRANT_URL`: Qdrant server URL (default: "http://localhost:6333")
+- `QDRANT_API_KEY`: Qdrant API key for cloud instances (optional, required for Qdrant Cloud)
+
+**Initialization Parameters:**
+- `qdrant_url`: Qdrant server URL (defaults to QDRANT_URL env var or "http://localhost:6333")
+- `qdrant_api_key`: Qdrant API key (defaults to QDRANT_API_KEY env var)
 - `collection_name`: Name of the Qdrant collection (default: "takra_pdfs")
-- `data_folder`: Path to PDF folder (default: "takra/backend/AI/data")
+- `data_folder`: Path to PDF folder (default: "data")
 - `embedding_model_name`: Sentence transformer model (default: "all-MiniLM-L6-v2")
 
 ## Notes

@@ -54,9 +54,12 @@ const ChatAssistant = () => {
     setInputValue('');
     setIsLoading(true);
 
+    const apiUrl = `${API_BASE_URL}/chatbot/chat`;
+    console.log('Calling chatbot API:', apiUrl);
+
     try {
       // Call RAG chatbot API
-      const response = await fetch(`${API_BASE_URL}/chatbot/chat`, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +71,15 @@ const ChatAssistant = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.detail || `HTTP error! status: ${response.status}`;
+        
+        // Provide user-friendly error messages
+        if (response.status === 503 && errorMessage.includes('Qdrant')) {
+          throw new Error('Vector database (Qdrant) is not running. Please start Qdrant with: docker run -p 6333:6333 qdrant/qdrant');
+        }
+        
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -85,12 +96,13 @@ const ChatAssistant = () => {
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
       console.error('Error calling chatbot API:', error);
+      console.error('API URL used:', `${API_BASE_URL}/chatbot/chat`);
       
       // Show error message instead of fallback
-      const errorMessage = error.response?.data?.detail || error.message || 'Failed to connect to the chatbot service';
+      const errorMessage = error.message || 'Failed to connect to the chatbot service';
       const botMessage = {
         id: messages.length + 2,
-        text: `I'm sorry, I encountered an error: ${errorMessage}. Please try again later or check if the service is available.`,
+        text: `I'm sorry, I encountered an error: ${errorMessage}. Please check if the backend server is running and the API endpoint is correct.`,
         sender: 'bot',
         timestamp: new Date(),
         error: true
@@ -123,9 +135,12 @@ const ChatAssistant = () => {
     setMessages(prev => [...prev, userMessage]);
     setIsLoading(true);
 
+    const apiUrl = `${API_BASE_URL}/chatbot/chat`;
+    console.log('Calling chatbot API (quick question):', apiUrl);
+
     try {
       // Call RAG chatbot API
-      const response = await fetch(`${API_BASE_URL}/chatbot/chat`, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +152,15 @@ const ChatAssistant = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.detail || `HTTP error! status: ${response.status}`;
+        
+        // Provide user-friendly error messages
+        if (response.status === 503 && errorMessage.includes('Qdrant')) {
+          throw new Error('Vector database (Qdrant) is not running. Please start Qdrant with: docker run -p 6333:6333 qdrant/qdrant');
+        }
+        
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -154,12 +177,13 @@ const ChatAssistant = () => {
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
       console.error('Error calling chatbot API:', error);
+      console.error('API URL used:', `${API_BASE_URL}/chatbot/chat`);
       
       // Show error message instead of fallback
-      const errorMessage = error.response?.data?.detail || error.message || 'Failed to connect to the chatbot service';
+      const errorMessage = error.message || 'Failed to connect to the chatbot service';
       const botMessage = {
         id: messages.length + 2,
-        text: `I'm sorry, I encountered an error: ${errorMessage}. Please try again later or check if the service is available.`,
+        text: `I'm sorry, I encountered an error: ${errorMessage}. Please check if the backend server is running and the API endpoint is correct.`,
         sender: 'bot',
         timestamp: new Date(),
         error: true

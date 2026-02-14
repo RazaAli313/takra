@@ -1,12 +1,12 @@
 import os
 import logging
+import time
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 from dotenv import load_dotenv
 
 import google.generativeai as genai
-from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams, PointStruct
+from pinecone import Pinecone, ServerlessSpec
 from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
 import uuid
@@ -19,18 +19,18 @@ class RAGChatbot:
     def __init__(
         self,
         gemini_api_key: Optional[str] = None,
-        qdrant_url: str = "http://localhost:6333",
-        collection_name: str = "takra_pdfs",
+        pinecone_api_key: Optional[str] = None,
+        index_name: str = "takrapdfs",
         data_folder: str = "data",
         embedding_model_name: str = "all-MiniLM-L6-v2"
     ):
         """
-        Initialize RAG Chatbot with Gemini and Qdrant
+        Initialize RAG Chatbot with Gemini and Pinecone
         
         Args:
             gemini_api_key: Google Gemini API key (defaults to GEMINI_API_KEY env var)
-            qdrant_url: Qdrant server URL
-            collection_name: Name of the Qdrant collection
+            pinecone_api_key: Pinecone API key (defaults to PINECONE_API_KEY env var)
+            index_name: Name of the Pinecone index
             data_folder: Path to folder containing PDFs
             embedding_model_name: Name of the sentence transformer model for embeddings
         """
@@ -41,23 +41,27 @@ class RAGChatbot:
         
         # Initialize Gemini for text generation
         genai.configure(api_key=self.gemini_api_key)
-        self.model = genai.GenerativeModel('gemini-pro')
+        self.model = genai.GenerativeModel('gemini-2.5-flash')
         
         # Initialize embedding model (sentence-transformers for reliable embeddings)
         logger.info(f"Loading embedding model: {embedding_model_name}")
         self.embedding_model = SentenceTransformer(embedding_model_name)
         self.embedding_dimension = self.embedding_model.get_sentence_embedding_dimension()
         
-        # Initialize Qdrant client
-        self.qdrant_client = QdrantClient(url=qdrant_url)
-        self.collection_name = collection_name
+        # Initialize Pinecone client
+        self.pinecone_api_key = pinecone_api_key or os.getenv("PINECONE_API_KEY")
+        if not self.pinecone_api_key:
+            raise ValueError("PINECONE_API_KEY not found. Please set it in environment variables or pass it as parameter.")
+        
+        self.pc = Pinecone(api_key=self.pinecone_api_key)
+        self.index_name = index_name
+        self.index = None  # Will be initialized on first use
         
         # Data folder path - resolve relative to this file's directory
         data_path = Path(data_folder)
         if not data_path.is_absolute():
             # If relative, resolve relative to the chatbot.py file location
             current_file = Path(__file__).parent
-            # Remove "takra/backend/AI/" prefix if present, otherwise use as-is
             if "data" in data_folder:
                 data_path = current_file / "data"
             else:
@@ -67,32 +71,112 @@ class RAGChatbot:
         if not self.data_folder.exists():
             raise ValueError(f"Data folder not found: {self.data_folder}")
         
-        # Initialize collection if it doesn't exist
-        self._initialize_collection()
-        
-        logger.info(f"RAG Chatbot initialized with collection: {collection_name}")
+        logger.info(f"RAG Chatbot initialized with Pinecone index: {index_name}")
     
-    def _initialize_collection(self):
-        """Initialize Qdrant collection if it doesn't exist"""
+    def _ensure_index_connected(self):
+        """Ensure Pinecone index is connected, create if needed"""
+        if self.index is not None:
+            try:
+                # Test connection by describing the index
+                self.index.describe_index_stats()
+                return True
+            except Exception as e:
+                logger.warning(f"Pinecone index connection lost, attempting to reconnect: {e}")
+                self.index = None
+        
+        # Initialize or connect to Pinecone index
         try:
-            collections = self.qdrant_client.get_collections().collections
-            collection_names = [col.name for col in collections]
+            # Check if index exists
+            existing_indexes = [idx.name for idx in self.pc.list_indexes()]
             
-            if self.collection_name not in collection_names:
-                # Create collection with embedding dimension
-                self.qdrant_client.create_collection(
-                    collection_name=self.collection_name,
-                    vectors_config=VectorParams(
-                        size=self.embedding_dimension,
-                        distance=Distance.COSINE
+            if self.index_name not in existing_indexes:
+                # Create index if it doesn't exist
+                logger.info(f"Creating Pinecone index: {self.index_name} with dimension {self.embedding_dimension}")
+                self.pc.create_index(
+                    name=self.index_name,
+                    dimension=self.embedding_dimension,
+                    metric="cosine",
+                    spec=ServerlessSpec(
+                        cloud="aws",
+                        region="us-east-1"  # You can change this to your preferred region
                     )
                 )
-                logger.info(f"Created new collection: {self.collection_name} with dimension {self.embedding_dimension}")
+                logger.info(f"Created new Pinecone index: {self.index_name}. Waiting for index to be ready...")
+                # Wait for index to be ready (Pinecone serverless indexes can take a moment)
+                max_wait = 60  # Maximum wait time in seconds
+                wait_time = 0
+                while wait_time < max_wait:
+                    try:
+                        # Check if index is ready by trying to connect
+                        temp_index = self.pc.Index(self.index_name)
+                        temp_index.describe_index_stats()  # This will fail if index isn't ready
+                        logger.info("Index is ready!")
+                        break
+                    except Exception:
+                        time.sleep(2)
+                        wait_time += 2
+                if wait_time >= max_wait:
+                    logger.warning(f"Index creation may still be in progress. Continuing anyway...")
             else:
-                logger.info(f"Collection {self.collection_name} already exists")
+                logger.info(f"Pinecone index {self.index_name} already exists")
+                # Check if the existing index has the correct dimension
+                try:
+                    index_info = self.pc.describe_index(self.index_name)
+                    existing_dimension = index_info.dimension
+                    if existing_dimension != self.embedding_dimension:
+                        logger.warning(
+                            f"Dimension mismatch detected! Index '{self.index_name}' has dimension {existing_dimension}, "
+                            f"but embedding model produces {self.embedding_dimension} dimensions. "
+                            f"Deleting and recreating index..."
+                        )
+                        # Delete the existing index
+                        self.pc.delete_index(self.index_name)
+                        logger.info(f"Deleted index {self.index_name}. Waiting before recreation...")
+                        time.sleep(5)  # Wait a bit for deletion to complete
+                        
+                        # Recreate with correct dimension
+                        logger.info(f"Creating Pinecone index: {self.index_name} with dimension {self.embedding_dimension}")
+                        self.pc.create_index(
+                            name=self.index_name,
+                            dimension=self.embedding_dimension,
+                            metric="cosine",
+                            spec=ServerlessSpec(
+                                cloud="aws",
+                                region="us-east-1"
+                            )
+                        )
+                        logger.info(f"Recreated index {self.index_name} with correct dimension. Waiting for index to be ready...")
+                        # Wait for index to be ready
+                        max_wait = 60
+                        wait_time = 0
+                        while wait_time < max_wait:
+                            try:
+                                temp_index = self.pc.Index(self.index_name)
+                                temp_index.describe_index_stats()
+                                logger.info("Index is ready!")
+                                break
+                            except Exception:
+                                time.sleep(2)
+                                wait_time += 2
+                        if wait_time >= max_wait:
+                            logger.warning(f"Index creation may still be in progress. Continuing anyway...")
+                        logger.warning(
+                            f"Index was recreated with correct dimension. "
+                            f"You will need to re-index your PDFs by calling process_pdfs(force_reload=True)"
+                        )
+                except Exception as e:
+                    logger.warning(f"Could not verify index dimension: {e}. Continuing anyway...")
+            
+            # Connect to the index
+            self.index = self.pc.Index(self.index_name)
+            logger.info("Successfully connected to Pinecone index")
+            return True
         except Exception as e:
-            logger.error(f"Error initializing collection: {e}")
-            raise
+            logger.error(f"Failed to connect to Pinecone index: {e}")
+            raise ConnectionError(
+                f"Could not connect to Pinecone index '{self.index_name}'. "
+                f"Please check your PINECONE_API_KEY and index configuration. Error: {str(e)}"
+            )
     
     def _get_embedding(self, text: str) -> List[float]:
         """Get embedding for text using sentence-transformers"""
@@ -129,7 +213,7 @@ class RAGChatbot:
     
     def process_pdfs(self, force_reload: bool = False) -> Dict[str, Any]:
         """
-        Process all PDFs in the data folder and store in Qdrant
+        Process all PDFs in the data folder and store in Pinecone
         
         Args:
             force_reload: If True, reprocess all PDFs even if already indexed
@@ -137,6 +221,25 @@ class RAGChatbot:
         Returns:
             Dictionary with processing results
         """
+        # Ensure Pinecone index is connected
+        self._ensure_index_connected()
+        
+        # Check if index already has data (indexing should be done only once)
+        if not force_reload:
+            try:
+                stats = self.index.describe_index_stats()
+                total_vectors = stats.get('total_vector_count', 0)
+                if total_vectors > 0:
+                    logger.info(f"Index {self.index_name} already has {total_vectors} vectors. Skipping indexing. Use force_reload=True to reindex.")
+                    return {
+                        "message": "PDFs already indexed. Use force_reload=True to reindex.",
+                        "processed_files": 0,
+                        "total_chunks": total_vectors,
+                        "already_indexed": True
+                    }
+            except Exception as e:
+                logger.warning(f"Could not check index status: {e}. Proceeding with indexing.")
+        
         pdf_files = list(self.data_folder.glob("*.pdf"))
         
         if not pdf_files:
@@ -161,38 +264,38 @@ class RAGChatbot:
                 chunks = self._chunk_text(text)
                 logger.info(f"Created {len(chunks)} chunks from {pdf_path.name}")
                 
-                # Generate embeddings and store in Qdrant
-                points = []
+                # Generate embeddings and store in Pinecone
+                vectors_to_upsert = []
                 for idx, chunk in enumerate(chunks):
                     try:
                         embedding = self._get_embedding(chunk)
-                        point_id = str(uuid.uuid4())
+                        vector_id = str(uuid.uuid4())
                         
-                        points.append(
-                            PointStruct(
-                                id=point_id,
-                                vector=embedding,
-                                payload={
-                                    "text": chunk,
-                                    "source": pdf_path.name,
-                                    "chunk_index": idx,
-                                    "total_chunks": len(chunks)
-                                }
-                            )
-                        )
+                        vectors_to_upsert.append({
+                            "id": vector_id,
+                            "values": embedding,
+                            "metadata": {
+                                "text": chunk,
+                                "source": pdf_path.name,
+                                "chunk_index": idx,
+                                "total_chunks": len(chunks)
+                            }
+                        })
                     except Exception as e:
                         logger.error(f"Error processing chunk {idx} from {pdf_path.name}: {e}")
                         continue
                 
-                # Upsert points to Qdrant
-                if points:
-                    self.qdrant_client.upsert(
-                        collection_name=self.collection_name,
-                        points=points
-                    )
+                # Upsert vectors to Pinecone in batches
+                if vectors_to_upsert:
+                    # Pinecone recommends batch sizes of 100
+                    batch_size = 100
+                    for i in range(0, len(vectors_to_upsert), batch_size):
+                        batch = vectors_to_upsert[i:i + batch_size]
+                        self.index.upsert(vectors=batch)
+                    
                     processed_count += 1
-                    total_chunks += len(points)
-                    logger.info(f"Stored {len(points)} chunks from {pdf_path.name} in Qdrant")
+                    total_chunks += len(vectors_to_upsert)
+                    logger.info(f"Stored {len(vectors_to_upsert)} chunks from {pdf_path.name} in Pinecone")
                 
             except Exception as e:
                 logger.error(f"Error processing PDF {pdf_path.name}: {e}")
@@ -205,31 +308,60 @@ class RAGChatbot:
         }
     
     def _search_relevant_chunks(self, query: str, top_k: int = 5) -> List[Dict[str, Any]]:
-        """Search for relevant chunks in Qdrant"""
+        """Search for relevant chunks in Pinecone"""
+        # Ensure Pinecone index is connected
+        self._ensure_index_connected()
+        
         try:
             # Get query embedding
             query_embedding = self._get_embedding(query)
             
-            # Search in Qdrant
-            search_results = self.qdrant_client.search(
-                collection_name=self.collection_name,
-                query_vector=query_embedding,
-                limit=top_k
+            # Ensure query_embedding is a list of floats (not numpy array)
+            if not isinstance(query_embedding, list):
+                query_embedding = query_embedding.tolist() if hasattr(query_embedding, 'tolist') else list(query_embedding)
+            
+            # Ensure top_k is valid (must be > 1 for Pinecone)
+            if top_k < 2:
+                top_k = 2
+                logger.warning(f"top_k must be > 1, using {top_k} instead")
+            
+            logger.debug(f"Query embedding dimension: {len(query_embedding)}, top_k: {top_k}")
+            
+            # Query Pinecone index - use the correct format from Pinecone SDK
+            # Format: index.query(vector=[...], top_k=int, include_metadata=bool)
+            search_results = self.index.query(
+                vector=query_embedding,
+                top_k=top_k,
+                include_metadata=True
             )
             
-            # Format results
+            # Format results - Pinecone returns QueryResponse object with matches attribute
             chunks = []
-            for result in search_results:
-                chunks.append({
-                    "text": result.payload.get("text", ""),
-                    "source": result.payload.get("source", ""),
-                    "score": result.score
-                })
+            
+            if hasattr(search_results, 'matches') and search_results.matches:
+                for match in search_results.matches:
+                    # Extract metadata - it's a dict in Pinecone responses
+                    metadata = match.metadata if hasattr(match, 'metadata') else {}
+                    if not isinstance(metadata, dict):
+                        # Convert to dict if it's an object
+                        metadata = dict(metadata) if hasattr(metadata, '__dict__') else {}
+                    
+                    chunks.append({
+                        "text": metadata.get("text", ""),
+                        "source": metadata.get("source", ""),
+                        "score": float(match.score) if hasattr(match, 'score') else 0.0
+                    })
+            else:
+                logger.warning(f"No matches found in search results. Response type: {type(search_results)}")
             
             return chunks
         except Exception as e:
             logger.error(f"Error searching chunks: {e}")
-            raise
+            raise ConnectionError(
+                f"Failed to query Pinecone index. "
+                f"Make sure the index '{self.index_name}' exists and has been indexed. "
+                f"Error: {str(e)}"
+            )
     
     def chat(self, user_query: str, top_k: int = 5) -> Dict[str, Any]:
         """
@@ -247,8 +379,21 @@ class RAGChatbot:
             relevant_chunks = self._search_relevant_chunks(user_query, top_k)
             
             if not relevant_chunks:
+                # Check if index is empty
+                try:
+                    stats = self.index.describe_index_stats()
+                    total_vectors = stats.get('total_vector_count', 0)
+                    if total_vectors == 0:
+                        return {
+                            "response": "The knowledge base is empty. Please process PDFs first by calling the /api/chatbot/process-pdfs endpoint.",
+                            "sources": [],
+                            "chunks_used": 0
+                        }
+                except Exception:
+                    pass
+                
                 return {
-                    "response": "I couldn't find relevant information in the documents. Please try rephrasing your question.",
+                    "response": "I couldn't find relevant information in the documents. Please try rephrasing your question or ensure PDFs have been processed.",
                     "sources": [],
                     "chunks_used": 0
                 }
@@ -295,18 +440,23 @@ Answer:"""
             }
     
     def get_collection_info(self) -> Dict[str, Any]:
-        """Get information about the Qdrant collection"""
+        """Get information about the Pinecone index"""
         try:
-            collection_info = self.qdrant_client.get_collection(self.collection_name)
+            # Ensure Pinecone index is connected
+            self._ensure_index_connected()
+            
+            stats = self.index.describe_index_stats()
             return {
-                "collection_name": self.collection_name,
-                "points_count": collection_info.points_count,
-                "vectors_count": collection_info.vectors_count,
-                "status": collection_info.status
+                "index_name": self.index_name,
+                "total_vector_count": stats.get('total_vector_count', 0),
+                "dimension": stats.get('dimension', 0),
+                "index_fullness": stats.get('index_fullness', 0)
             }
+        except ConnectionError as e:
+            return {"error": str(e), "pinecone_connected": False}
         except Exception as e:
-            logger.error(f"Error getting collection info: {e}")
-            return {"error": str(e)}
+            logger.error(f"Error getting index info: {e}")
+            return {"error": str(e), "pinecone_connected": False}
 
 
 # Global chatbot instance (lazy initialization)

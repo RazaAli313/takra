@@ -233,7 +233,7 @@ app.include_router(cogent_labs_registrations_admin_router, prefix="/api/admin")
 from backend.api.admin.BlogComments import router as blog_comments_admin_router
 app.include_router(blog_comments_admin_router, prefix="/api/admin")
 from backend.api.Chatbot import router as chatbot_router
-app.include_router(chatbot_router, prefix="/api")
+app.include_router(chatbot_router, prefix="/api/chatbot", tags=["chatbot"])
 @app.on_event("startup")
 async def startup_db_client():
     await init_db()

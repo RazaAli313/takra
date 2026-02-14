@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
@@ -22,7 +22,7 @@ class ChatResponse(BaseModel):
     error: Optional[str] = None
 
 
-@router.post("/chatbot/chat", response_model=ChatResponse)
+@router.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     """
     Chat with the RAG chatbot
@@ -51,6 +51,12 @@ async def chat(request: ChatRequest):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Chatbot configuration error: {str(e)}"
         )
+    except ConnectionError as e:
+        logger.error(f"Pinecone connection error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"Vector database connection failed: {str(e)}. Please check your Pinecone API key and index configuration."
+        )
     except Exception as e:
         logger.error(f"Error in chat endpoint: {e}")
         raise HTTPException(
@@ -59,13 +65,13 @@ async def chat(request: ChatRequest):
         )
 
 
-@router.post("/chatbot/process-pdfs")
-async def process_pdfs(force_reload: bool = False):
+@router.post("/process-pdfs")
+async def process_pdfs(force_reload: bool = Query(False, description="If True, reprocess all PDFs even if already indexed")):
     """
-    Process all PDFs in the data folder and index them in Qdrant
+    Process all PDFs in the data folder and index them in Pinecone
     
     Args:
-        force_reload: If True, reprocess all PDFs even if already indexed
+        force_reload: If True, reprocess all PDFs even if already indexed (query parameter: ?force_reload=true)
     
     Returns:
         Dictionary with processing results
@@ -93,10 +99,10 @@ async def process_pdfs(force_reload: bool = False):
         )
 
 
-@router.get("/chatbot/collection-info")
+@router.get("/collection-info")
 async def get_collection_info():
     """
-    Get information about the Qdrant collection
+    Get information about the Pinecone index
     
     Returns:
         Dictionary with collection statistics
@@ -118,7 +124,7 @@ async def get_collection_info():
         )
 
 
-@router.get("/chatbot/health")
+@router.get("/health")
 async def health_check():
     """
     Health check endpoint for the chatbot service
