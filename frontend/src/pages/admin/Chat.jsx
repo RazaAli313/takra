@@ -2,24 +2,12 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import axios from "axios";
-import { API_BASE_URL } from "../../utils/api";
 import { MessageCircle, ArrowLeft } from "lucide-react";
 
 const QUILL_SNOW_CSS = "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css";
 
-const FAKE_ADMIN_ID = "admin-1";
-
-const MOCK_SIDEBAR_USERS = [
-  { id: "user-1", name: "User One", email: "user1@example.com" },
-  { id: "user-2", name: "User Two", email: "user2@example.com" },
-  { id: "user-3", name: "User Three", email: "user3@example.com" },
-];
-
 const AdminChat = () => {
-  const [sidebarUsers, setSidebarUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [sidebarLoading, setSidebarLoading] = useState(true);
   const [chatIdFromCreate, setChatIdFromCreate] = useState(null);
   const [creatingChat, setCreatingChat] = useState(false);
   const [quillCssReady, setQuillCssReady] = useState(false);
@@ -29,10 +17,16 @@ const AdminChat = () => {
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
 
+  const adminId = import.meta.env.VITE_ADMIN_ID ?? null;
+  const sidebarUsers = useQuery(
+    api.chat.listChatUsersForAdmin,
+    adminId ? { adminId } : "skip"
+  ) ?? [];
+
   const chat = useQuery(
     api.chat.getChat,
-    selectedUser
-      ? { userId: selectedUser.id, adminId: FAKE_ADMIN_ID }
+    selectedUser && adminId
+      ? { userId: selectedUser.id, adminId }
       : "skip"
   );
   const chatId = chat?._id ?? chatIdFromCreate;
@@ -44,50 +38,21 @@ const AdminChat = () => {
   const sendMessageMutation = useMutation(api.chat.sendMessage);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      setSidebarLoading(true);
-      try {
-        if (API_BASE_URL) {
-          const token =
-            document.cookie
-              .split("; ")
-              .find((row) => row.startsWith("adminAuthToken="))
-              ?.split("=")[1] || "";
-          const { data } = await axios.get(`${API_BASE_URL}/chat/users`, {
-            headers: token ? { adminAuthToken: token } : {},
-            withCredentials: true,
-          });
-          if (Array.isArray(data)) setSidebarUsers(data);
-          else setSidebarUsers(MOCK_SIDEBAR_USERS);
-        } else {
-          setSidebarUsers(MOCK_SIDEBAR_USERS);
-        }
-      } catch (err) {
-        console.warn("Chat sidebar: using mock users. Wire FastAPI GET /api/chat/users", err);
-        setSidebarUsers(MOCK_SIDEBAR_USERS);
-      } finally {
-        setSidebarLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
-
-  useEffect(() => {
-    if (selectedUser && chat === null && !creatingChat) {
+    if (selectedUser && adminId && chat === null && !creatingChat) {
       setCreatingChat(true);
       getOrCreateChat({
         userId: selectedUser.id,
-        adminId: FAKE_ADMIN_ID,
+        adminId,
       })
         .then((id) => setChatIdFromCreate(id))
         .finally(() => setCreatingChat(false));
     }
     if (!selectedUser) setChatIdFromCreate(null);
-  }, [selectedUser, chat, creatingChat, getOrCreateChat]);
+  }, [selectedUser, adminId, chat, creatingChat, getOrCreateChat]);
 
   const messages = (convexMessages ?? []).map((m) => ({
     id: m._id,
-    sender: m.senderId === FAKE_ADMIN_ID ? "response" : "user",
+    sender: m.senderId === adminId ? "response" : "user",
     content: m.content,
     timestamp: new Date(m._creationTime).toISOString(),
   }));
@@ -173,14 +138,14 @@ const AdminChat = () => {
 
   const handleSend = async () => {
     const quill = quillInstanceRef.current;
-    if (!quill || !chatId) return;
+    if (!quill || !chatId || !adminId) return;
     const html = quill.root.innerHTML;
     const text = quill.getText().trim();
     if (!text && !html.includes("<img")) return;
     try {
       await sendMessageMutation({
         chatId,
-        senderId: FAKE_ADMIN_ID,
+        senderId: adminId,
         content: html,
       });
       const len = quill.getLength();
@@ -201,7 +166,9 @@ const AdminChat = () => {
           </h2>
         </div>
         <div className="flex-1 overflow-y-auto">
-          {sidebarLoading ? (
+          {!adminId ? (
+            <div className="p-4 text-gray-400 text-sm">Set VITE_ADMIN_ID in .env to see chats.</div>
+          ) : sidebarUsers === undefined ? (
             <div className="p-4 text-gray-400 text-sm">Loading users...</div>
           ) : (
             sidebarUsers.map((user) => (
@@ -302,7 +269,7 @@ const AdminChat = () => {
                   <button
                     type="button"
                     onClick={handleSend}
-                    disabled={!isQuillReady || !chatId}
+                    disabled={!isQuillReady || !chatId || !adminId}
                     className="px-4 py-2 rounded-lg text-sm font-medium bg-[#005c4b] text-white hover:bg-[#056d5a] disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Send

@@ -1,13 +1,10 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation, useConvexAuth } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
 const QUILL_SNOW_CSS = "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css";
-
-// Fake IDs until you wire FastAPI user/admin ids
-const FAKE_USER_ID = "user-1";
-const FAKE_ADMIN_ID = "admin-1";
 
 const ChatAdmin = () => {
   const editorRef = useRef(null);
@@ -19,10 +16,15 @@ const ChatAdmin = () => {
   const [isQuillReady, setIsQuillReady] = useState(false);
   const [quillCssReady, setQuillCssReady] = useState(false);
 
-  const chat = useQuery(api.chat.getChat, {
-    userId: FAKE_USER_ID,
-    adminId: FAKE_ADMIN_ID,
-  });
+  const { isAuthenticated, isLoading: isAuthLoading } = useConvexAuth();
+  const adminId = import.meta.env.VITE_ADMIN_ID ?? null;
+  const currentUser = useQuery(api.user.current);
+  const userId = currentUser?._id ?? null;
+
+  const chat = useQuery(
+    api.chat.getChat,
+    userId && adminId ? { userId, adminId } : "skip"
+  );
   const getOrCreateChat = useMutation(api.chat.getOrCreateChat);
   const chatId = chat?._id ?? chatIdFromCreate;
   const convexMessages = useQuery(
@@ -32,17 +34,18 @@ const ChatAdmin = () => {
   const sendMessageMutation = useMutation(api.chat.sendMessage);
 
   useEffect(() => {
-    if (chat === null && !creatingChat) {
+    if (userId && adminId && chat === null && !creatingChat) {
       setCreatingChat(true);
-      getOrCreateChat({ userId: FAKE_USER_ID, adminId: FAKE_ADMIN_ID })
+      getOrCreateChat({ userId, adminId })
         .then((id) => setChatIdFromCreate(id))
         .finally(() => setCreatingChat(false));
     }
-  }, [chat, creatingChat, getOrCreateChat]);
+    if (!userId) setChatIdFromCreate(null);
+  }, [userId, adminId, chat, creatingChat, getOrCreateChat]);
 
   const messages = (convexMessages ?? []).map((m) => ({
     id: m._id,
-    sender: m.senderId === FAKE_USER_ID ? "user" : "response",
+    sender: m.senderId === userId ? "user" : "response",
     content: m.content,
     timestamp: new Date(m._creationTime).toISOString(),
   }));
@@ -90,7 +93,7 @@ const ChatAdmin = () => {
   }, []);
 
   useEffect(() => {
-    if (!editorRef.current || !quillCssReady) return;
+    if (!editorRef.current || !quillCssReady || !userId) return;
 
     let quill = null;
 
@@ -150,23 +153,21 @@ const ChatAdmin = () => {
         setIsQuillReady(false);
       }
     };
-  }, [quillCssReady]);
+  }, [quillCssReady, userId]);
 
   const handleSend = async () => {
     const quill = quillInstanceRef.current;
-    if (!quill) return;
+    if (!quill || !userId || !chatId) return;
 
     const root = quill.root;
     const html = root.innerHTML;
     const text = quill.getText().trim();
     if (!text && !html.includes("<img")) return;
 
-    if (!chatId) return;
-
     try {
       await sendMessageMutation({
         chatId,
-        senderId: FAKE_USER_ID,
+        senderId: userId,
         content: html,
       });
       const len = quill.getLength();
@@ -176,6 +177,43 @@ const ChatAdmin = () => {
     }
   };
 
+  if (isAuthLoading) {
+    return (
+      <div className="fixed inset-0 top-20 z-0 flex items-center justify-center w-full bg-gradient-to-b from-white via-sky-50/30 to-slate-50 text-slate-600">
+        <p className="text-sm">Loading…</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="fixed inset-0 top-20 z-0 flex flex-col w-full bg-gradient-to-b from-white via-sky-50/30 to-slate-50 text-slate-800 items-center justify-center p-6">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-md w-full rounded-2xl bg-white border border-sky-200 shadow-lg shadow-sky-100 p-8 text-center"
+        >
+          <h2 className="text-xl font-semibold text-slate-800 mb-2">Sign in to chat</h2>
+          <p className="text-slate-600 text-sm mb-6">
+            You need to be signed in to send and view messages with the admin.
+          </p>
+          <Link
+            to="/signin"
+            className="inline-block px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-medium transition-colors"
+          >
+            Sign in
+          </Link>
+          <p className="text-slate-500 text-xs mt-4">
+            Don&apos;t have an account?{" "}
+            <Link to="/signup" className="text-sky-600 hover:text-sky-700 font-medium">
+              Sign up
+            </Link>
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 top-20 z-0 flex flex-col w-full bg-gradient-to-b from-white via-sky-50/30 to-slate-50 text-slate-800">
       <div className="flex flex-col flex-1 w-full min-h-0 p-4 md:p-6">
@@ -184,6 +222,9 @@ const ChatAdmin = () => {
           ref={messagesContainerRef}
           className="flex-1 min-h-0 overflow-y-auto rounded-xl bg-white/90 border border-sky-200/80 shadow-sm shadow-sky-100 p-4 space-y-4 mb-4"
         >
+          {!userId && (
+            <p className="text-center text-slate-500 text-sm py-4">Loading your conversation…</p>
+          )}
           {messages.map((msg) => (
             <motion.div
               key={msg.id}
@@ -230,7 +271,7 @@ const ChatAdmin = () => {
             <button
               type="button"
               onClick={handleSend}
-              disabled={!isQuillReady || !chatId}
+              disabled={!isQuillReady || !chatId || !userId}
               className="px-3 py-1.5 rounded-md text-lg font-medium bg-gradient-to-r from-sky-500 to-blue-500 text-white
                 hover:from-sky-600 hover:to-blue-600 disabled:opacity-50 disabled:cursor-not-allowed
                 transition-all duration-200 shadow-sm"
