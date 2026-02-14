@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Portal Login - FCIT Developers Club</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0f7ff;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        .header {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            padding: 35px 20px;
+            text-align: center;
+            position: relative;
+        }
+        .logo-container {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+        .header h1 {
+            color: white;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .content {
+            padding: 35px;
+        }
+        .intro {
+            margin-bottom: 25px;
+        }
+        .member-name {
+            color: #059669;
+            font-weight: 600;
+        }
+        .otp-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .otp-code {
+            display: inline-block;
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+            padding: 20px 40px;
+            border-radius: 12px;
+            letter-spacing: 8px;
+            margin: 15px 0;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+        .expiry-note {
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .details {
+            background-color: #f0fdf4;
+            border-left: 5px solid #10b981;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .detail-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #d1fae5;
+        }
+        .detail-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        .label {
+            font-weight: 700;
+            color: #059669;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .value {
+            color: #334155;
+            font-size: 15px;
+        }
+        .security-note {
+            background-color: #fef3cd;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .info-box {
+            background: #f0fdf4;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            text-align: center;
+            border: 1px dashed #10b981;
+        }
+        .info-box p {
+            margin: 0;
+            color: #059669;
+            font-weight: 600;
+        }
+        .info-box .sub {
+            font-weight: normal;
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+            margin: 30px 0;
+        }
+        .footer {
+            background-color: #f1f5f9;
+            padding: 25px;
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+        }
+        .footer p {
+            margin: 8px 0;
+        }
+        @media (max-width: 650px) {
+            .container {
+                border-radius: 0;
+            }
+            .content {
+                padding: 25px 20px;
+            }
+            .header {
+                padding: 25px 15px;
+            }
+            .header h1 {
+                font-size: 22px;
+            }
+            .logo {
+                font-size: 20px;
+            }
+            .otp-code {
+                font-size: 28px;
+                padding: 15px 25px;
+                letter-spacing: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <a href="#" class="logo">FCIT Developers Club</a>
+            </div>
+            <h1>Member Portal Login</h1>
+            <p>Update your portfolio and profile</p>
+        </div>
+        
+        <div class="content">
+            <div class="intro">
+                <p>Hello <span class="member-name">{{member_name}}</span>,</p>
+                <p>You've requested to login to your Member Portal. Use the following verification code to complete your login:</p>
+            </div>
+            
+            <div class="otp-container">
+                <p class="label">Your verification code:</p>
+                <div class="otp-code">{{otp}}</div>
+                <p class="expiry-note">This code will expire in <strong>5 minutes</strong></p>
+            </div>
+            
+            <div class="info-box">
+                <p>Enter this code in the verification screen to access your portal</p>
+                <p class="sub">You can update your bio, skills, projects, and more!</p>
+            </div>
+            
+            <div class="security-note">
+                <p><strong>Security notice:</strong> If you didn't request this code, please ignore this email. Someone may have entered your email by mistake.</p>
+            </div>
+            
+            <div class="details">
+                <div class="detail-item">
+                    <span class="label">Request Time:</span>
+                    <span class="value">{{timestamp}} UTC</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">IP Address:</span>
+                    <span class="value">{{ip_address}}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Device:</span>
+                    <span class="value">{{device_info}}</span>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+
+            <div class="closing">
+                <p>Thank you for being part of our team!</p>
+                <p><strong>FCIT Developers Club</strong></p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated message. Please do not reply to this email.</p>
+            <p>© {{year}} FCIT Developers Club. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

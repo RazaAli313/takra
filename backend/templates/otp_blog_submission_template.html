@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Submission Verification - FCIT Developers Club</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0f7ff;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        .header {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            padding: 35px 20px;
+            text-align: center;
+            position: relative;
+        }
+        .logo-container {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+        .header h1 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .header p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 16px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .otp-box {
+            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+            border: 2px solid #14b8a6;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .otp-code {
+            font-size: 42px;
+            font-weight: bold;
+            color: #0d9488;
+            letter-spacing: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+        }
+        .info-section {
+            background-color: #f8fafc;
+            border-left: 4px solid #14b8a6;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 6px;
+        }
+        .info-section h3 {
+            color: #0d9488;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .info-section p {
+            color: #475569;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        .info-section strong {
+            color: #0f766e;
+        }
+        .warning-box {
+            background-color: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 18px;
+            margin: 25px 0;
+        }
+        .warning-box p {
+            color: #92400e;
+            font-size: 14px;
+            margin: 0;
+        }
+        .footer {
+            background-color: #f8fafc;
+            padding: 25px 30px;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+        }
+        .footer p {
+            color: #64748b;
+            font-size: 13px;
+            margin: 5px 0;
+        }
+        .footer a {
+            color: #14b8a6;
+            text-decoration: none;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <span class="logo">FDC</span>
+            </div>
+            <h1>Blog Submission Verification</h1>
+            <p>Verify your email to submit your blog post</p>
+        </div>
+        
+        <div class="content">
+            <p style="font-size: 16px; color: #475569; margin-bottom: 20px;">
+                Thank you for your interest in submitting a blog post to FCIT Developers Club! 
+                Please use the verification code below to verify your email address.
+            </p>
+            
+            <div class="otp-box">
+                <p style="color: #0d9488; font-size: 16px; margin-bottom: 10px; font-weight: 600;">
+                    Your Verification Code
+                </p>
+                <div class="otp-code">{{ otp }}</div>
+                <p style="color: #64748b; font-size: 14px; margin-top: 10px;">
+                    This code will expire in 5 minutes
+                </p>
+            </div>
+            
+            <div class="info-section">
+                <h3>📋 Request Details</h3>
+                <p><strong>Time:</strong> {{ timestamp }}</p>
+                <p><strong>IP Address:</strong> {{ ip_address }}</p>
+                <p><strong>Device:</strong> {{ device_info }}</p>
+            </div>
+            
+            <div class="warning-box">
+                <p>
+                    <strong>⚠️ Security Notice:</strong> If you didn't request this verification code, 
+                    please ignore this email or contact our support team immediately.
+                </p>
+            </div>
+            
+            <p style="font-size: 14px; color: #64748b; margin-top: 25px; line-height: 1.8;">
+                Once verified, you'll be able to submit your blog post for review. 
+                Our team will review your submission and get back to you soon!
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p><strong>FCIT Developers Club</strong></p>
+            <p>© {{ year }} FCIT Developers Club. All rights reserved.</p>
+            <p style="margin-top: 15px;">
+                <a href="https://fcit-developers.club">Visit our website</a> | 
+                <a href="mailto:fcit-developers.club@pucit.edu.pk">Contact Support</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

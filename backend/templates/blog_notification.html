@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Blog Published - FCIT Developers Club</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f7ff;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #0361f7 100%);
+            padding: 35px 20px;
+            text-align: center;
+            position: relative;
+        }
+        .logo-container {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        .header h1 {
+            color: white;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .content {
+            padding: 35px;
+        }
+        .details {
+            background-color: #f8fafc;
+            border-left: 5px solid #3b82f6;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        .blog-link {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 12px 24px;
+            background: linear-gradient(90deg,#3b82f6,#2563eb);
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+            transition: background 0.2s;
+        }
+        .blog-link:hover {
+            background: linear-gradient(90deg,#2563eb,#3b82f6);
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 0.95em;
+            color: #888;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <span class="logo">FCIT Developers Club</span>
+            </div>
+            <h1>New Blog Published!</h1>
+        </div>
+        <div class="content">
+            <div class="details">
+                <p><strong>Topic:</strong> {{ topic }}</p>
+                <p><strong>Author:</strong> {{ author }}</p>
+                <p><strong>Description:</strong> {{ description }}</p>
+            </div>
+            <a class="blog-link" href="https://fdc-pucit.org/blogs/{{ blog_id }}" target="_blank">Read the Blog</a>
+            <p style="margin-top:28px; color:#475569;">Stay tuned for more updates, events, and articles from FCIT Developers Club!</p>
+        </div>
+        <div class="footer">
+            &copy; {{ year }} FCIT Developers Club. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

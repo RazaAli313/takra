@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration Pending - FCIT Developers Club</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f7ff;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #0361f7 100%);
+            padding: 35px 20px;
+            text-align: center;
+            position: relative;
+        }
+        .logo-container {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        .header h1 {
+            color: white;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .content {
+            padding: 35px;
+        }
+        .details {
+            background-color: #f8fafc;
+            border-left: 5px solid #3b82f6;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 0.95em;
+            color: #888;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <span class="logo">FCIT Developers Club</span>
+            </div>
+            <h1>Event Registration Pending</h1>
+        </div>
+        <div class="content">
+            <div class="details">
+                <p><strong>Event Name:</strong> {{ event_name }}</p>
+                <p><strong>Team Name:</strong> {{ team_name }}</p>
+                <p><strong>Team Members:</strong></p>
+                <ul>
+                    {% for member in members %}
+                    <li>{{ member.name }} ({{ member.email }})</li>
+                    {% endfor %}
+                </ul>
+                <p><strong>Modules Registered:</strong> {{ modules|join(', ') }}</p>
+            </div>
+            <p>Your registration is received and pending admin approval. You will be notified once approved.</p>
+        </div>
+        <div class="footer">
+            &copy; {{ year }} FCIT Developers Club. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

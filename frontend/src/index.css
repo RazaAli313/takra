@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root {
+    @apply m-0 p-0 w-full h-full overflow-x-hidden;
+    scroll-behavior: smooth;
+    background-color: #F8FAFC; /* Takra snow white */
+  }
+  html {
+    background-color: #F8FAFC;
+  }
+  body {
+    @apply antialiased;
+    background-color: #F8FAFC !important; /* Takra snow white */
+    color: #1e293b; /* slate-800 for dark text on light bg */
+    min-height: 100vh;
+  }
+  #root {
+    background-color: #F8FAFC;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded font-medium transition-colors duration-200;
+  }
+  .btn-primary {
+    @apply bg-gradient-to-r from-sky-400 to-blue-600 hover:from-sky-500 hover:to-blue-700 text-white;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r;
+  }
+}

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Blog Comment - FCIT Developers Club</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0f7ff;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            padding: 35px 20px;
+            text-align: center;
+        }
+        .logo-container {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+        .header h1 {
+            color: white;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .content {
+            padding: 35px;
+        }
+        .intro {
+            margin-bottom: 25px;
+        }
+        .info-box {
+            background-color: #f8fafc;
+            border-left: 5px solid #3b82f6;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .info-item {
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .info-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        .label {
+            font-weight: 700;
+            color: #1e40af;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .value {
+            color: #334155;
+            font-size: 17px;
+            word-wrap: break-word;
+        }
+        .comment-body {
+            background-color: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+        }
+        .comment-body p {
+            margin: 0;
+            color: #334155;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        .action-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .action-button:hover {
+            opacity: 0.9;
+        }
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+            margin: 30px 0;
+        }
+        .footer {
+            background-color: #f1f5f9;
+            padding: 25px;
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+        }
+        .footer p {
+            margin: 8px 0;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .status-pending {
+            background-color: #fef3cd;
+            color: #92400e;
+        }
+        @media (max-width: 650px) {
+            .container {
+                border-radius: 0;
+            }
+            .content {
+                padding: 25px 20px;
+            }
+            .header {
+                padding: 25px 15px;
+            }
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <a href="#" class="logo">FCIT Developers Club</a>
+            </div>
+            <h1>New Blog Comment Received</h1>
+        </div>
+        
+        <div class="content">
+            <div class="intro">
+                <p>Hello,</p>
+                <p>A new comment has been posted on one of your blog posts and is pending approval.</p>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-item">
+                    <span class="label">Blog Post:</span>
+                    <span class="value">{{post_title}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Commenter Name:</span>
+                    <span class="value">{{commenter_name}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Commenter Email:</span>
+                    <span class="value">{{commenter_email}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Status:</span>
+                    <span class="value">Pending Approval<span class="status-badge status-pending">Pending</span></span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Submitted At:</span>
+                    <span class="value">{{timestamp}}</span>
+                </div>
+            </div>
+            
+            <div class="comment-body">
+                <p>{{comment_body}}</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="{{admin_url}}" class="action-button">Review Comment in Admin Panel</a>
+            </div>
+            
+            <div class="divider"></div>
+
+            <div class="closing">
+                <p>Thank you,</p>
+                <p><strong>FCIT Developers Club Team</strong></p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated notification from the FCIT Developers Club blog system.</p>
+            <p>© {{year}} FCIT Developers Club. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
+
