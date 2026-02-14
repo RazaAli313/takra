@@ -89,7 +89,7 @@ const CelebrationModal = ({ isOpen, onClose }) => {
                     </div>
                     <div className="flex items-start gap-3 text-slate-700">
                       <MapPinIcon className="h-5 w-5 text-blue-500 shrink-0 mt-0.5" />
-                      <p><span className="text-blue-600 font-semibold">Two chapters</span> — Old Campus & New Campus — expanding our reach and impact.</p>
+                      <p><span className="text-blue-600 font-semibold">Two chapters</span> — expanding our reach and impact.</p>
                     </div>
                     <div className="flex items-start gap-3 text-slate-700">
                       <AcademicCapIcon className="h-5 w-5 text-sky-500 shrink-0 mt-0.5" />

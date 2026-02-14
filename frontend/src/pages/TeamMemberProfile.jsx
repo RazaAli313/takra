@@ -368,7 +368,7 @@ async function downloadProfileAsPDF(member) {
     let logoDataUrl = null;
     async function getLogoDataUrl() {
       try {
-        const response = await fetch('/logo.png');
+        const response = await fetch('/takra.png');
         const blob = await response.blob();
         return await new Promise((resolve) => {
           const reader = new FileReader();
