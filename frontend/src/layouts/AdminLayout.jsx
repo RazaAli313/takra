@@ -28,6 +28,8 @@ const AdminLayout = () => {
     { name: "About", path: "/fake/about", icon: <FileEditIcon className="h-5 w-5" /> },
      { name: "Contact", path: "/fake/contact", icon: <FileEditIcon className="h-5 w-5" /> },
     { name: "Events", path: "/fake/events", icon: <CalendarIcon className="h-5 w-5" /> },
+    { name: "Categories", path: "/fake/categories", icon: <FileEditIcon className="h-5 w-5" /> },
+    { name: "Support Members", path: "/fake/support-members", icon: <UsersIcon className="h-5 w-5" /> },
     { name: "Team", path: "/fake/team", icon: <UsersIcon className="h-5 w-5" /> },
     // { name: "Positions", path: "/fake/positions", icon: <FileEditIcon className="h-5 w-5" /> },
     { name: "Hall of Fame", path: "/fake/hall-of-fame", icon: <TrophyIcon className="h-5 w-5" /> },

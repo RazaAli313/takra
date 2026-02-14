@@ -10,7 +10,7 @@ const Footer = () => {
   const [email, setEmail] = useState("");
   const [isSubscribing, setSubscribing] = useState(false);
   const links = [
-    { title: "Explore", items: [{ name: "Home", href: "/" }, { name: "About", href: "/about" }, { name: "Events", href: "/events" }, { name: "Blogs", href: "/blogs" }] },
+    { title: "Explore", items: [{ name: "Home", href: "/" }, { name: "About", href: "/about" }, { name: "Events", href: "/events" }, { name: "Competitions", href: "/competitions" }, { name: "Blogs", href: "/blogs" }, { name: "My Dashboard", href: "/dashboard" }] },
     { title: "Connect", items: [{ name: "Team", href: "/team" }, { name: "Hall of Fame", href: "/hall-of-fame" }, { name: "Contact", href: "/contact" }] },
   ];
 

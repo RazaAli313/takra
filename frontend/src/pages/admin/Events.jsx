@@ -91,18 +91,34 @@ const AdminEvents = () => {
     registration_open: true,
     modules: [],
     module_amounts: {},
+    category_id: "",
+    category_name: "",
+    rules: "",
+    prizes: "",
+    deadline: "",
   });
   const [currentImage, setCurrentImage] = useState(null);
   const [registrations, setRegistrations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [moduleAmountsInput, setModuleAmountsInput] = useState("");
+  const [categories, setCategories] = useState([]);
 
-  // Fetch events from API
+  // Fetch events and merge registration counts from competitions API
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get(`${API_URL}/events`);
-        setEvents(response.data);
+        const [eventsRes, compsRes, catRes] = await Promise.all([
+          axios.get(`${API_URL}/events`),
+          axios.get(`${API_URL}/competitions?sort=new`).catch(() => ({ data: { competitions: [] } })),
+          axios.get(`${API_URL}/categories`).catch(() => ({ data: [] })),
+        ]);
+        const eventsList = Array.isArray(eventsRes.data) ? eventsRes.data : [];
+        const comps = compsRes.data?.competitions || [];
+        const countMap = {};
+        comps.forEach((c) => { countMap[c.id] = c.registration_count ?? 0; });
+        const withCount = eventsList.map((e) => ({ ...e, registration_count: countMap[e.id] ?? 0 }));
+        setEvents(withCount);
+        setCategories(Array.isArray(catRes.data) ? catRes.data : []);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -138,6 +154,11 @@ const AdminEvents = () => {
     formData.append('module_amounts', moduleAmountsString);
     // Add discount_codes as JSON string
     formData.append('discount_codes', JSON.stringify(eventData.discount_codes || []));
+    if (eventData.category_id) formData.append('category_id', eventData.category_id);
+    if (eventData.category_name) formData.append('category_name', eventData.category_name);
+    if (eventData.rules != null) formData.append('rules', eventData.rules || '');
+    if (eventData.prizes != null) formData.append('prizes', eventData.prizes || '');
+    if (eventData.deadline != null) formData.append('deadline', eventData.deadline || '');
     if (currentImage) {
       formData.append('image', currentImage);
     }
@@ -225,7 +246,12 @@ const AdminEvents = () => {
         registration_open: event.registration_open,
         modules: event.modules || [],
         module_amounts: event.module_amounts || {},
-        discount_codes: event.discount_codes || []
+        discount_codes: event.discount_codes || [],
+        category_id: event.category_id || "",
+        category_name: event.category_name || "",
+        rules: event.rules || "",
+        prizes: event.prizes || "",
+        deadline: event.deadline || "",
       });
       // Initialize module amounts input
       if (event.module_amounts && Object.keys(event.module_amounts).length > 0) {
@@ -248,7 +274,12 @@ const AdminEvents = () => {
         registration_open: true,
         modules: [],
         module_amounts: {},
-        discount_codes: []
+        discount_codes: [],
+        category_id: "",
+        category_name: "",
+        rules: "",
+        prizes: "",
+        deadline: "",
       });
       setModuleAmountsInput("");
     }
@@ -378,6 +409,10 @@ const AdminEvents = () => {
                 <MapPinIcon className="h-4 w-4 mr-1" />
                 {event.location}
               </div>
+              <div className="flex items-center">
+                <UserIcon className="h-4 w-4 mr-1" />
+                {event.registration_count ?? 0} registered
+              </div>
             </div>
             
             <div className="flex items-center">
@@ -459,6 +494,58 @@ const AdminEvents = () => {
                   onChange={(e) => setCurrentEvent({...currentEvent, description: e.target.value})}
                   rows="3"
                   className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-400 mb-2">Category</label>
+                <select
+                  value={currentEvent.category_id || ""}
+                  onChange={(e) => {
+                    const cat = categories.find((c) => c.id === e.target.value);
+                    setCurrentEvent({
+                      ...currentEvent,
+                      category_id: e.target.value,
+                      category_name: cat ? cat.name : "",
+                    });
+                  }}
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-purple-500"
+                >
+                  <option value="">No category</option>
+                  {categories.map((c) => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-gray-400 mb-2">Rules (optional)</label>
+                <textarea
+                  value={currentEvent.rules || ""}
+                  onChange={(e) => setCurrentEvent({...currentEvent, rules: e.target.value})}
+                  rows="2"
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-purple-500"
+                  placeholder="Competition rules"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-400 mb-2">Prizes (optional)</label>
+                <textarea
+                  value={currentEvent.prizes || ""}
+                  onChange={(e) => setCurrentEvent({...currentEvent, prizes: e.target.value})}
+                  rows="2"
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-purple-500"
+                  placeholder="Prize details"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-400 mb-2">Registration deadline (optional)</label>
+                <input
+                  type="text"
+                  value={currentEvent.deadline || ""}
+                  onChange={(e) => setCurrentEvent({...currentEvent, deadline: e.target.value})}
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-purple-500"
+                  placeholder="e.g. 2026-03-01 or March 1, 2026"
                 />
               </div>
               

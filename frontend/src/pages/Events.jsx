@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { 
   CalendarIcon, 
   ClockIcon, 
@@ -15,6 +16,8 @@ import axios from "axios";
 import { API_BASE_URL } from "../utils/api";
 
 const Events = () => {
+  const [searchParams] = useSearchParams();
+  const registerCompetitionId = searchParams.get("register");
   const [isProcessing, setIsProcessing] = useState(false);
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,14 +48,23 @@ const Events = () => {
     const fetchEvents = async () => {
       try {
   const response = await axios.get(`${API_BASE_URL}/events`);
-        setEvents(response.data);
+        const data = Array.isArray(response.data) ? response.data : [];
+        setEvents(data);
         setIsLoading(false);
+        // If URL has ?register=competitionId, open registration for that event
+        if (registerCompetitionId && data.length > 0) {
+          const event = data.find((e) => e.id === registerCompetitionId);
+          if (event && event.registration_open) {
+            setCurrentEvent(event);
+            setShowRegistration(true);
+          }
+        }
       } catch (error) {
         setIsLoading(false);
       }
     };
     fetchEvents();
-  }, []);
+  }, [registerCompetitionId]);
 
   // Debounced real-time check for team name availability (Instagram-style)
   useEffect(() => {

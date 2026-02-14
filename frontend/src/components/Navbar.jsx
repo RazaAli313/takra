@@ -11,8 +11,10 @@ const NavbarContent = () => {
 
   const navItems = [
     { name: "Home", path: "/" },
+    { name: "Competitions", path: "/competitions" },
+    { name: "Calendar", path: "/competitions/calendar" },
+    { name: "My Dashboard", path: "/dashboard" },
     { name: "About", path: "/about" },
-    { name: "Events", path: "/events" },
     { name: "Team", path: "/team" },
     { name: "Hall of Fame", path: "/hall-of-fame" },
     { name: "Blogs", path: "/blogs" },
@@ -84,7 +86,7 @@ const NavbarContent = () => {
           <div className="flex justify-between h-20 items-center">
             <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0 flex items-center">
               <Link to="/" className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-blue-600 flex items-center gap-3">
-                FCIT Developers Club
+                Taakra
                 <img src="/logo.png" alt="Logo" className="h-10 w-10 ml-2 rounded-full border-2 border-sky-400 bg-white shadow-sm" />
               </Link>
             </motion.div>

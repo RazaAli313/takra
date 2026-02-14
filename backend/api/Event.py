@@ -148,6 +148,11 @@ def event_helper(event) -> dict:
         "modules": event.get("modules", []),
         "module_amounts": event.get("module_amounts", {}),
         "discount_codes": event.get("discount_codes", []),
+        "category_id": event.get("category_id"),
+        "category_name": event.get("category_name"),
+        "rules": event.get("rules", ""),
+        "prizes": event.get("prizes", ""),
+        "deadline": event.get("deadline"),
         "created_at": event["created_at"],
         "updated_at": event["updated_at"]
     }
@@ -174,6 +179,12 @@ async def create_event(
     module_amounts: str = Form(""),  # e.g. "Coding:500,AI:700"
     image: UploadFile = File(None),
     discount_codes: str = Form(""),
+    # Taakra fields
+    category_id: str = Form(None),
+    category_name: str = Form(None),
+    rules: str = Form(None),
+    prizes: str = Form(None),
+    deadline: str = Form(None),
     db=Depends(get_event_db)
 ):
     now = datetime.utcnow()
@@ -210,6 +221,11 @@ async def create_event(
         "modules": modules_list,
         "module_amounts": module_amounts_dict,
         "discount_codes": discount_codes_list,
+        "category_id": category_id or None,
+        "category_name": category_name or None,
+        "rules": rules or "",
+        "prizes": prizes or "",
+        "deadline": deadline or None,
         "created_at": now,
         "updated_at": now
     }
@@ -231,6 +247,11 @@ async def update_event(
     competitions: str = Form("[]"),
     image: UploadFile = File(None),
     discount_codes: str = Form(""),
+    category_id: str = Form(None),
+    category_name: str = Form(None),
+    rules: str = Form(None),
+    prizes: str = Form(None),
+    deadline: str = Form(None),
     db=Depends(get_event_db)
 ):
     if not ObjectId.is_valid(event_id):
@@ -273,6 +294,11 @@ async def update_event(
         "module_amounts": module_amounts_dict,
         "competitions": competitions_list,
         "discount_codes": discount_codes_list if discount_codes_list is not None else [],
+        "category_id": category_id or None,
+        "category_name": category_name or None,
+        "rules": rules or "",
+        "prizes": prizes or "",
+        "deadline": deadline or None,
         "updated_at": now
     }
     # Handle image upload
