@@ -19,7 +19,6 @@ const NavbarContent = () => {
     { name: "Hall of Fame", path: "/hall-of-fame" },
     { name: "Blogs", path: "/blogs" },
     { name: "FAQ", path: "/faq" },
-    { name: "Jobs", path: "/jobs" },
     { name: "Contact", path: "/contact" },
   ];
 

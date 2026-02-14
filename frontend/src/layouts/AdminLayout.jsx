@@ -78,29 +78,35 @@ const AdminLayout = () => {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-500" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-950 via-slate-900 to-blue-950">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-400" />
+          <p className="text-slate-400 text-sm">Loading...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-sky-950 via-slate-900 to-blue-950 text-white">
       <div className="flex">
-        {/* Sidebar */}
+        {/* Sidebar - Taakra theme */}
         <motion.div 
           initial={{ x: -300 }}
           animate={{ x: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="hidden md:flex flex-col w-64 h-screen fixed bg-gray-800 border-r border-gray-700"
+          className="hidden md:flex flex-col w-64 h-screen fixed border-r border-sky-500/20 bg-slate-800/90 backdrop-blur"
         >
-          <div className="p-4 border-b border-gray-700">
-            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
-              Taakra 2026 Admin
-            </h1>
+          <div className="p-4 border-b border-sky-500/20">
+            <div className="flex items-center gap-3">
+              <img src="/takra.png" alt="Taakra" className="h-10 w-10 rounded-full border-2 border-sky-400/80" />
+              <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-blue-400 to-sky-500">
+                Taakra 2026
+              </h1>
+            </div>
           </div>
           
-          <nav className="flex-1 p-4 space-y-2">
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
             {visibleNavItems.map((item) => (
               <motion.div
                 key={item.path}
@@ -111,8 +117,8 @@ const AdminLayout = () => {
                   to={item.path}
                   className={`flex items-center p-3 rounded-lg transition-colors ${
                     location.pathname === item.path
-                      ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
-                      : "text-gray-300 hover:bg-gray-700"
+                      ? "bg-gradient-to-r from-sky-600 to-blue-600 text-white shadow-lg shadow-sky-500/20"
+                      : "text-slate-300 hover:bg-slate-700/80 hover:text-sky-200"
                   }`}
                 >
                   <span className="mr-3">{item.icon}</span>
@@ -124,7 +130,7 @@ const AdminLayout = () => {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center w-full p-3 rounded-lg text-gray-300 hover:bg-gray-700"
+                className="flex items-center w-full p-3 rounded-lg text-slate-300 hover:bg-slate-700/80 hover:text-sky-200"
                 onClick={() => navigate("/fake/delegations")}
               >
                 <FileEditIcon className="h-5 w-5 mr-3" />
@@ -133,12 +139,12 @@ const AdminLayout = () => {
             )}
           </nav>
           
-          <div className="p-4 border-t border-gray-700">
+          <div className="p-4 border-t border-sky-500/20">
             {hasPermission("settings") && (
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center w-full p-3 rounded-lg text-gray-300 hover:bg-gray-700"
+                className="flex items-center w-full p-3 rounded-lg text-slate-300 hover:bg-slate-700/80 hover:text-sky-200"
                 onClick={() => navigate("/fake/settings")}
               >
                 <SettingsIcon className="h-5 w-5 mr-3" />
@@ -150,7 +156,7 @@ const AdminLayout = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={onLogout}
-              className="flex items-center w-full p-3 rounded-lg text-gray-300 hover:bg-gray-700 mt-2"
+              className="flex items-center w-full p-3 rounded-lg text-slate-300 hover:bg-slate-700/80 hover:text-red-300 mt-2"
             >
               <LogOutIcon className="h-5 w-5 mr-3" />
               Logout
@@ -164,9 +170,8 @@ const AdminLayout = () => {
         </div>
 
         {/* Main content */}
-        <div className="flex-1 md:ml-64">
-          {/* <Navbar /> */}
-          <main className="p-6">
+        <div className="flex-1 md:ml-64 min-h-screen">
+          <main className="p-6 text-slate-200">
             <Outlet />
           </main>
         </div>
