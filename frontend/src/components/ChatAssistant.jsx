@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChatBubbleLeftRightIcon, XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { API_BASE_URL } from '../utils/api';
 
 const ChatAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,49 +9,14 @@ const ChatAssistant = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hello! 👋 I'm your virtual assistant. How can I help you today?",
+      text: "Hello! 👋 I'm your AI-powered assistant. I can answer questions based on the TAAKRA rulebook and other documents. How can I help you today?",
       sender: 'bot',
       timestamp: new Date()
     }
   ]);
   const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
-
-  // Predefined FAQ answers
-  const faqAnswers = {
-    'Lead':'Lead of FCIT Developers Club is Syed Muhammad Raza Ali, this is his linked in profile: https://linkedin.com/in/razaali313',
-    'lead':'Lead of FCIT Developers Club is Syed Muhammad Raza Ali, this is his linked in profile: https://linkedin.com/in/razaali313',
-    'hi': "Hello! 👋 How can I help you today?",
-    'hello': "Hello! 👋 How can I help you today?",
-    'hey': "Hello! 👋 How can I help you today?",
-    'what is your name': "Hey👋 My name is Dev AI. I am chat assistant talking on behalf of FCIT Developers Club",
-    'What is your name': "Hey👋 My name is Dev AI. I am chat assistant talking on behalf of FCIT Developers Club",
-    'Whats your name': "Hey👋 My name is Dev AI .I am chat assistant talking on behalf of FCIT Developers Club",
-    'Who are you': "Hey👋 My name is Dev AI .I am chat assistant talking on behalf of FCIT Developers Club",
-    'who are you': "Hey👋 My name is Dev AI .I am chat assistant talking on behalf of FCIT Developers Club",
-    'join': "To join FCIT Developers Club, visit our 'Join Team' page and fill out the registration form. We review applications regularly!",
-    'membership': "Membership is free for FCIT students. Visit the 'Join Team' page to apply. No prior experience is required!",
-    'events': "Check out our Events page to see upcoming hackathons, workshops, tech talks, and coding competitions. Most events are open to all students!",
-    'register': "You can register for events from our Events page. Click on any event and use the Register button to sign up.",
-    'hackathon': "We organize regular hackathons! Check the Events page for upcoming competitions. All skill levels are welcome!",
-    'workshop': "We offer workshops on web development, mobile apps, AI/ML, and more. Visit the Events page to see upcoming workshops.",
-    'team': "Visit our Team page to see current members. To join the core team, stay active and apply when positions open!",
-    'contact': "You can reach us through the Contact page, or send us a message. We'll get back to you as soon as possible!",
-    'location': "FCIT Developers Club is part of the Faculty of Computing and Information Technology. Check the Contact page for details.",
-    'help': "I can help with questions about membership, events, team, and general club information. What would you like to know?",
-    'faq': "Check our FAQ page for answers to common questions about membership, events, and more!",
-    'jobs': "Visit our Job Board to see internship and job opportunities. We regularly post new positions!",
-    'blog': "Check out our Blogs section for technical articles, tutorials, and project showcases written by our members.",
-    'hall of fame': "The Hall of Fame showcases achievements of our members and alumni, including hackathon wins and notable projects!",
-    'alumni': "Alumni are welcome to attend events and mentor current members. Contact us for more information on alumni involvement.",
-    // 'discord': "Members receive access to our community platforms (Discord/Slack) after joining. Join us to get access!",
-    // 'slack': "Members receive access to our community platforms (Discord/Slack) after joining. Join us to get access!",
-    'code': "We welcome all programming languages! Common ones include Python, JavaScript, Java, C++, and more. Join our workshops to learn!",
-    'thank': "You're welcome! Is there anything else I can help you with?",
-    'thanks': "You're welcome! Is there anything else I can help you with?",
-    'bye': "Goodbye! Feel free to come back anytime if you have questions. 👋",
-    'default': "I'm not sure about that. Try asking about membership, events, team, jobs, or contact information. Or check our FAQ page for more details!"
-  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -70,56 +36,82 @@ const ChatAssistant = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const findAnswer = (question) => {
-    const lowerQuestion = question.toLowerCase().trim();
-    
-    // Check for exact matches or keywords
-    for (const [key, answer] of Object.entries(faqAnswers)) {
-      if (lowerQuestion.includes(key) || lowerQuestion === key) {
-        return answer;
-      }
-    }
-    
-    return faqAnswers.default;
-  };
-
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || isLoading) return;
 
+    const userQuery = inputValue.trim();
+    
     // Add user message
     const userMessage = {
       id: messages.length + 1,
-      text: inputValue,
+      text: userQuery,
       sender: 'user',
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
+    setInputValue('');
+    setIsLoading(true);
 
-    // Simulate bot thinking (you can remove this later when backend is ready)
-    setTimeout(() => {
-      const botAnswer = findAnswer(inputValue);
+    try {
+      // Call RAG chatbot API
+      const response = await fetch(`${API_BASE_URL}/chatbot/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: userQuery,
+          top_k: 5
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Add bot response from LLM
       const botMessage = {
         id: messages.length + 2,
-        text: botAnswer,
+        text: data.response || "I'm sorry, I couldn't generate a response. Please try again.",
         sender: 'bot',
-        timestamp: new Date()
+        timestamp: new Date(),
+        sources: data.sources || []
       };
-      setMessages(prev => [...prev, botMessage]);
-    }, 500);
 
-    setInputValue('');
+      setMessages(prev => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Error calling chatbot API:', error);
+      
+      // Show error message instead of fallback
+      const errorMessage = error.response?.data?.detail || error.message || 'Failed to connect to the chatbot service';
+      const botMessage = {
+        id: messages.length + 2,
+        text: `I'm sorry, I encountered an error: ${errorMessage}. Please try again later or check if the service is available.`,
+        sender: 'bot',
+        timestamp: new Date(),
+        error: true
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const quickQuestions = [
-    "How do I join?",
-    "What events are coming?",
-    "How can I contact you?",
-    "Tell me about the team"
+    "What is TAAKRA?",
+    "What are the competition rules?",
+    "How do I register?",
+    "Tell me about the event"
   ];
 
-  const handleQuickQuestion = (question) => {
+  const handleQuickQuestion = async (question) => {
+    if (isLoading) return;
+
     // Add user message directly
     const userMessage = {
       id: messages.length + 1,
@@ -129,18 +121,54 @@ const ChatAssistant = () => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    setIsLoading(true);
 
-    // Get bot answer and add it
-    setTimeout(() => {
-      const botAnswer = findAnswer(question);
+    try {
+      // Call RAG chatbot API
+      const response = await fetch(`${API_BASE_URL}/chatbot/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: question,
+          top_k: 5
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Add bot response from LLM
       const botMessage = {
         id: messages.length + 2,
-        text: botAnswer,
+        text: data.response || "I'm sorry, I couldn't generate a response. Please try again.",
         sender: 'bot',
-        timestamp: new Date()
+        timestamp: new Date(),
+        sources: data.sources || []
       };
+
       setMessages(prev => [...prev, botMessage]);
-    }, 500);
+    } catch (error) {
+      console.error('Error calling chatbot API:', error);
+      
+      // Show error message instead of fallback
+      const errorMessage = error.response?.data?.detail || error.message || 'Failed to connect to the chatbot service';
+      const botMessage = {
+        id: messages.length + 2,
+        text: `I'm sorry, I encountered an error: ${errorMessage}. Please try again later or check if the service is available.`,
+        sender: 'bot',
+        timestamp: new Date(),
+        error: true
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -222,17 +250,45 @@ const ChatAssistant = () => {
                     }`}
                   >
                     <p className="text-xs md:text-sm whitespace-pre-wrap break-words">{message.text}</p>
+                    {message.sources && message.sources.length > 0 && (
+                      <p className="text-[10px] md:text-xs mt-1.5 opacity-70 italic">
+                        Sources: {message.sources.join(', ')}
+                      </p>
+                    )}
+                    {message.error && (
+                      <p className="text-[10px] md:text-xs mt-1.5 opacity-70 italic text-red-600">
+                        (Service error)
+                      </p>
+                    )}
                     <p className="text-[10px] md:text-xs mt-1 opacity-70">
                       {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
                 </motion.div>
               ))}
+              {isLoading && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex justify-start"
+                >
+                  <div className="max-w-[85%] md:max-w-[80%] rounded-lg p-2.5 md:p-3 bg-slate-200 text-slate-800">
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-1">
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                      </div>
+                      <span className="text-xs md:text-sm text-slate-600">Thinking...</span>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
               <div ref={messagesEndRef} />
             </div>
 
             {/* Quick Questions */}
-            {messages.length <= 1 && (
+            {messages.length <= 1 && !isLoading && (
               <div className="px-3 md:px-4 pb-2 relative z-10 flex-shrink-0">
                 <p className="text-xs text-slate-500 mb-2">Quick questions:</p>
                 <div className="flex flex-wrap gap-1.5 md:gap-2">
@@ -266,10 +322,14 @@ const ChatAssistant = () => {
                 />
                 <button
                   type="submit"
-                  disabled={!inputValue.trim()}
+                  disabled={!inputValue.trim() || isLoading}
                   className="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 md:p-2.5 rounded-lg transition-all flex-shrink-0"
                 >
-                  <PaperAirplaneIcon className="h-4 w-4 md:h-5 md:w-5" />
+                  {isLoading ? (
+                    <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    <PaperAirplaneIcon className="h-4 w-4 md:h-5 md:w-5" />
+                  )}
                 </button>
               </div>
               <p className="text-[10px] md:text-xs text-slate-500 text-center mt-2">

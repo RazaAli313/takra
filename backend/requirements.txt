@@ -37,3 +37,9 @@ google-auth>=2.20.0
 google-api-python-client>=2.70.0
 aiosmtplib==5.0.0
 gunicorn==21.2.0
+slowapi
+httpx
+qdrant-client>=1.7.0
+google-generativeai>=0.3.0
+pypdf>=3.17.0
+sentence-transformers>=2.2.0
