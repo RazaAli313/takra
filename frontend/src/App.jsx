@@ -7,6 +7,10 @@ import Contact from './pages/Contact';
 import HallOfFame from './pages/HallofFame';
 import Blogs from './pages/Blogs';
 import Events from './pages/Events';
+import Competitions from './pages/Competitions';
+import CompetitionsCalendar from './pages/CompetitionsCalendar';
+import CompetitionDetail from './pages/CompetitionDetail';
+import Dashboard from './pages/Dashboard';
 import Team from './pages/Team';
 import TeamMemberProfile from './pages/TeamMemberProfile';
 import JoinTeam from './pages/JoinTeam';
@@ -18,10 +22,13 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatAssistant from './components/ChatAssistant';
 import AdminLayout from './layouts/AdminLayout';
+import { AdminAuthProvider } from './context/AdminAuthContext';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminAbout from './pages/admin/About';
 import AdminContact from './pages/admin/Contact';
 import AdminEvents from './pages/admin/Events';
+import AdminCategories from './pages/admin/Categories';
+import AdminSupportMembers from './pages/admin/SupportMembers';
 import AdminTeam from './pages/admin/Team';
 import AdminRegistrations from './pages/admin/Registrations';
 import AdminBlogs from './pages/admin/Blogs';
@@ -33,6 +40,10 @@ import BlogPost from './pages/BlogPost';
 import AdminHome from './pages/admin/Home';
 import AdminHallOfFame from './pages/admin/HallOfFame';
 import AdminMessages from './pages/admin/Messages';
+import AdminChat from './pages/admin/Chat';
+import ChatAdmin from './pages/ChatAdmin';
+import UserSignUp from './pages/UserSignUp';
+import UserSignIn from './pages/UserSignIn';
 import AdminFAQ from './pages/admin/FAQ';
 import AdminJobs from './pages/admin/Jobs';
 import Login from './pages/admin/Login';
@@ -43,6 +54,7 @@ import TermsAndConditions from './components/policies/terms';
 import './index.css';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { useConvexAuth } from 'convex/react';
 import FakeLogin from './pages/FakeLogin';
 import axios from 'axios';
 import { API_BASE_URL } from "./utils/api";
@@ -296,8 +308,17 @@ import AdminSettings from './pages/admin/Settings';
 
 function AppWrapper() {
   const location = useLocation();
-    // reCAPTCHA initialization removed
-  
+  const navigate = useNavigate();
+  const { isAuthenticated } = useConvexAuth();
+
+  // If Google sent the OAuth code to localhost by mistake (wrong redirect URI), strip ?code= so URL is clean
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.has("code") && !isAuthenticated) {
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location.search, location.pathname, isAuthenticated, navigate]);
+
   return (
     
     <div className="flex flex-col min-h-screen w-screen overflow-x-hidden bg-slate-50">
@@ -319,6 +340,10 @@ function AppWrapper() {
             <Route path="/blogs/apply" element={<BlogApply />} />
             <Route path="/blogs/:id" element={<BlogPost />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/competitions" element={<Competitions />} />
+            <Route path="/competitions/calendar" element={<CompetitionsCalendar />} />
+            <Route path="/competitions/:id" element={<CompetitionDetail />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/team" element={<Team />} />
             <Route path="/team/:id" element={<TeamMemberProfile />} />
             <Route path="/join" element={<JoinTeam />} />
@@ -326,12 +351,22 @@ function AppWrapper() {
             <Route path="/register" element={<CogentLabsRegistration />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/jobs" element={<Jobs />} />
+            <Route path="/chat" element={<ChatAdmin />} />
+            <Route path="/signup" element={<UserSignUp />} />
+            <Route path="/signin" element={<UserSignIn />} />
             <Route exact path="/error" element={<FakeErrorPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             <Route exact path="/verifyotp" element={<OTPVerification />} />
             <Route path="/admin/login" element={<FakeLogin/>} />
-            <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }>
+              <Route index element={<Navigate to="/admin/login" replace />} />
+              <Route path="chat" element={<AdminChat />} />
+            </Route>
             
             {/* Cogent Labs Admin Routes */}
             <Route path="/manage/registrations/login" element={<CogentLabsLogin />} />
@@ -358,7 +393,9 @@ function AppWrapper() {
             
             <Route path="/fake" element={
               <ProtectedRoute>
-                <AdminLayout />
+                <AdminAuthProvider>
+                  <AdminLayout />
+                </AdminAuthProvider>
               </ProtectedRoute>
             }>
               {/* <Route index element={<AdminDashboard />} /> */}
@@ -369,6 +406,8 @@ function AppWrapper() {
               <Route path="about" element={<AdminAbout />} />
               <Route path="contact" element={<AdminContact />} />
               <Route path="events" element={<AdminEvents />} />
+              <Route path="categories" element={<AdminCategories />} />
+              <Route path="support-members" element={<AdminSupportMembers />} />
               <Route path="team" element={<AdminTeam />} />
               <Route path="registrations" element={<AdminRegistrations />} />
               <Route path="delegations" element={<AdminDelegations />} />
@@ -399,8 +438,8 @@ function AppWrapper() {
         </AnimatePresence>
       </main>
       
-      {/* Don't show Footer on fake routes, admin, or member portal */}
-      {!location.pathname.startsWith('/fake') && !location.pathname.startsWith('/error') && !location.pathname.startsWith('/admin') && !location.pathname.startsWith('/member') && <Footer />}
+      {/* Don't show Footer on fake routes, admin, member portal, or chat */}
+      {!location.pathname.startsWith('/fake') && !location.pathname.startsWith('/error') && !location.pathname.startsWith('/admin') && !location.pathname.startsWith('/member') && location.pathname !== '/chat' && <Footer />}
     </div>
   );
 }

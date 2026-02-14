@@ -82,7 +82,7 @@ async def send_member_otp_email(otp: str, recipient_email: str, member_name: str
                 </div>
                 <div style="padding: 30px;">
                     <p>Hello <strong>{member_name}</strong>,</p>
-                    <p>You've requested to login to your FCIT Developers Club Member Portal. Use the following verification code:</p>
+                    <p>You've requested to login to your Taakra 2026 Member Portal. Use the following verification code:</p>
                     <div style="text-align: center; margin: 30px 0;">
                         <div style="display: inline-block; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; font-size: 32px; font-weight: bold; padding: 15px 30px; border-radius: 10px; letter-spacing: 5px;">
                             {otp}
@@ -99,7 +99,7 @@ async def send_member_otp_email(otp: str, recipient_email: str, member_name: str
                     </div>
                 </div>
                 <div style="background: #f1f5f9; padding: 20px; text-align: center; color: #64748b; font-size: 14px;">
-                    <p>© {datetime.utcnow().year} FCIT Developers Club. All rights reserved.</p>
+                    <p>© {datetime.utcnow().year} Taakra 2026. All rights reserved.</p>
                 </div>
             </div>
         </body>
@@ -107,12 +107,12 @@ async def send_member_otp_email(otp: str, recipient_email: str, member_name: str
         """
 
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = "Your Member Portal Login Code - FCIT Developers Club"
+    msg["Subject"] = "Your Member Portal Login Code - Taakra 2026"
     msg["From"] = sender_email
     msg["To"] = recipient_email
 
     text = f"""
-    FCIT Developers Club - Member Portal Login
+    Taakra 2026 - Member Portal Login
 
     Hello {member_name},
 
@@ -127,7 +127,7 @@ async def send_member_otp_email(otp: str, recipient_email: str, member_name: str
 
     If you didn't request this code, please ignore this email.
 
-    © {datetime.utcnow().year} FCIT Developers Club. All rights reserved.
+    © {datetime.utcnow().year} Taakra 2026. All rights reserved.
     """
 
     msg.attach(MIMEText(text, "plain"))
@@ -182,7 +182,7 @@ async def send_password_reset_email(reset_token: str, recipient_email: str, memb
                 </div>
                 <div style="padding: 30px;">
                     <p>Hello <strong>{member_name}</strong>,</p>
-                    <p>You've requested to reset your password for the FCIT Developers Club Member Portal.</p>
+                    <p>You've requested to reset your password for the Taakra 2026 Member Portal.</p>
                     <p>Click the button below to set a new password:</p>
                     <div style="text-align: center; margin: 30px 0;">
                         <a href="{reset_link}" style="display: inline-block; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; font-size: 18px; font-weight: bold; padding: 15px 40px; border-radius: 8px; text-decoration: none;">
@@ -197,7 +197,7 @@ async def send_password_reset_email(reset_token: str, recipient_email: str, memb
                     </div>
                 </div>
                 <div style="background: #f1f5f9; padding: 20px; text-align: center; color: #64748b; font-size: 14px;">
-                    <p>© {datetime.utcnow().year} FCIT Developers Club. All rights reserved.</p>
+                    <p>© {datetime.utcnow().year} Taakra 2026. All rights reserved.</p>
                 </div>
             </div>
         </body>
@@ -205,12 +205,12 @@ async def send_password_reset_email(reset_token: str, recipient_email: str, memb
         """
 
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = "Password Reset - FCIT Developers Club Member Portal"
+    msg["Subject"] = "Password Reset - Taakra 2026 Member Portal"
     msg["From"] = sender_email
     msg["To"] = recipient_email
 
     text = f"""
-    FCIT Developers Club - Password Reset
+    Taakra 2026 - Password Reset
 
     Hello {member_name},
 
@@ -222,7 +222,7 @@ async def send_password_reset_email(reset_token: str, recipient_email: str, memb
 
     If you didn't request this, please ignore this email.
 
-    © {datetime.utcnow().year} FCIT Developers Club. All rights reserved.
+    © {datetime.utcnow().year} Taakra 2026. All rights reserved.
     """
 
     msg.attach(MIMEText(text, "plain"))
@@ -704,7 +704,7 @@ async def send_announcement_email(recipient_email: str, member_name: str, subjec
     msg["To"] = recipient_email
 
     text = f"""
-    FCIT Developers Club - Team Announcement
+    Taakra 2026 - Team Announcement
 
     Hello {member_name},
 
@@ -714,7 +714,7 @@ async def send_announcement_email(recipient_email: str, member_name: str, subjec
 
     Access Member Portal: {frontend_url}/member/login
 
-    © {datetime.utcnow().year} FCIT Developers Club. All rights reserved.
+    © {datetime.utcnow().year} Taakra 2026. All rights reserved.
     """
 
     msg.attach(MIMEText(text, "plain"))
@@ -759,7 +759,7 @@ async def send_welcome_portal_email(recipient_email: str, member_name: str, temp
                             <td style="text-align: center; padding-bottom: 30px;">
                                 <div style="display: inline-block; background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(99, 102, 241, 0.2)); padding: 15px 30px; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.3);">
                                     <h1 style="margin: 0; color: #60a5fa; font-size: 24px; font-weight: bold;">
-                                        FCIT Developers Club
+                                        Taakra 2026
                                     </h1>
                                 </div>
                             </td>
@@ -782,7 +782,7 @@ async def send_welcome_portal_email(recipient_email: str, member_name: str, temp
                                             </h2>
                                             
                                             <p style="margin: 0 0 20px; color: #cbd5e1; font-size: 15px; line-height: 1.7;">
-                                                Your FCIT Developers Club Member Portal account is now ready! You can now access the portal to update your profile, add your skills, projects, and more.
+                                                Your Taakra 2026 Member Portal account is now ready! You can now access the portal to update your profile, add your skills, projects, and more.
                                             </p>
 
                                             <div style="background-color: #0f172a; border-radius: 12px; padding: 20px; border: 1px solid #334155; margin: 20px 0;">
@@ -815,7 +815,7 @@ async def send_welcome_portal_email(recipient_email: str, member_name: str, temp
                         <tr>
                             <td style="padding-top: 30px; text-align: center;">
                                 <p style="margin: 0; color: #475569; font-size: 12px;">
-                                    © {datetime.utcnow().year} FCIT Developers Club. All rights reserved.
+                                    © {datetime.utcnow().year} Taakra 2026. All rights reserved.
                                 </p>
                             </td>
                         </tr>
@@ -833,7 +833,7 @@ async def send_welcome_portal_email(recipient_email: str, member_name: str, temp
     msg["To"] = recipient_email
 
     text = f"""
-    Welcome to FCIT Developers Club Member Portal!
+    Welcome to Taakra 2026 Member Portal!
 
     Hello {member_name}!
 
@@ -849,7 +849,7 @@ async def send_welcome_portal_email(recipient_email: str, member_name: str, temp
 
     Questions? Contact the club administrators.
 
-    © {datetime.utcnow().year} FCIT Developers Club
+    © {datetime.utcnow().year} Taakra 2026
     """
 
     msg.attach(MIMEText(text, "plain"))

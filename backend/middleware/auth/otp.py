@@ -82,15 +82,15 @@ async def send_otp_email(otp: str, recipient_email: str, ip_address: str, device
     base_path = Path(__file__).parent.parent.parent
     if template_type == "comment":
         template_path = base_path / "templates" / "otp_comment_template.html"
-        subject = "Your Comment Verification Code - FCIT Developers Club"
+        subject = "Your Comment Verification Code - Taakra 2026"
         expiry_time = "5 minutes"
     elif template_type == "blog_submission":
         template_path = base_path / "templates" / "otp_blog_submission_template.html"
-        subject = "Blog Submission Verification Code - FCIT Developers Club"
+        subject = "Blog Submission Verification Code - Taakra 2026"
         expiry_time = "5 minutes"
     else:  # admin
         template_path = base_path / "templates" / "otp_admin_template.html"
-        subject = "Your OTP Verification Code - FCIT Developers Club"
+        subject = "Your OTP Verification Code - Taakra 2026"
         expiry_time = "1 minute"
     
     if not template_path.exists():
@@ -99,7 +99,7 @@ async def send_otp_email(otp: str, recipient_email: str, ip_address: str, device
         html_content = f"""
         <html>
         <body>
-            <h2>OTP Verification - FCIT Developers Club</h2>
+            <h2>OTP Verification - Taakra 2026</h2>
             <p><strong>Your OTP code:</strong> {otp}</p>
             <p><strong>Request Time:</strong> {datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}</p>
             <p><strong>IP Address:</strong> {ip_address}</p>
@@ -134,7 +134,7 @@ async def send_otp_email(otp: str, recipient_email: str, ip_address: str, device
 
     # Create the plain-text version of your message
     text = f"""
-    FCIT Developers Club - OTP Verification
+    Taakra 2026 - OTP Verification
     
     Your verification code: {otp}
     
@@ -147,7 +147,7 @@ async def send_otp_email(otp: str, recipient_email: str, ip_address: str, device
     
     If you didn't request this code, please ignore this email or contact our support team immediately.
     
-    © {datetime.datetime.now().year} FCIT Developers Club. All rights reserved.
+    © {datetime.datetime.now().year} Taakra 2026. All rights reserved.
     """
 
     # Turn these into plain/html MIMEText objects

@@ -2,24 +2,35 @@ import { memo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useConvexAuth } from 'convex/react';
+import { useAuthActions } from '@convex-dev/auth/react';
 import { API_BASE_URL } from '../utils/api';
 
 const NavbarContent = () => {
   const [open, setOpen] = useState(false);
   const [banner, setBanner] = useState(null);
   const [showBanner, setShowBanner] = useState(true);
+  const { isAuthenticated } = useConvexAuth();
+  const { signOut } = useAuthActions();
 
   const navItems = [
     { name: "Home", path: "/" },
+    { name: "Competitions", path: "/competitions" },
+    { name: "Calendar", path: "/competitions/calendar" },
+    { name: "My Dashboard", path: "/dashboard" },
     { name: "About", path: "/about" },
-    { name: "Events", path: "/events" },
     { name: "Team", path: "/team" },
     { name: "Hall of Fame", path: "/hall-of-fame" },
     { name: "Blogs", path: "/blogs" },
     { name: "FAQ", path: "/faq" },
-    { name: "Jobs", path: "/jobs" },
     { name: "Contact", path: "/contact" },
+    { name: "Chat", path: "/chat" },
   ];
+
+  const handleSignOut = () => {
+    setOpen(false);
+    void signOut();
+  };
 
   useEffect(() => {
     const fetchBanner = async () => {
@@ -84,8 +95,8 @@ const NavbarContent = () => {
           <div className="flex justify-between h-20 items-center">
             <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0 flex items-center">
               <Link to="/" className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-blue-600 flex items-center gap-3">
-                FCIT Developers Club
-                <img src="/logo.png" alt="Logo" className="h-10 w-10 ml-2 rounded-full border-2 border-sky-400 bg-white shadow-sm" />
+                Taakra
+                <img src="/takra.png" alt="Taakra" className="h-10 w-10 ml-2 rounded-full border-2 border-sky-400 bg-white shadow-sm" />
               </Link>
             </motion.div>
 
@@ -101,6 +112,26 @@ const NavbarContent = () => {
                   </Link>
                 </motion.div>
               ))}
+              {isAuthenticated ? (
+                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                  <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className="px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-colors"
+                  >
+                    Logout
+                  </button>
+                </motion.div>
+              ) : (
+                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                  <Link
+                    to="/signin"
+                    className="px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-colors"
+                  >
+                    Login
+                  </Link>
+                </motion.div>
+              )}
             </div>
 
             <div className="md:hidden flex items-center gap-2">
@@ -131,6 +162,27 @@ const NavbarContent = () => {
                   </Link>
                 </motion.div>
               ))}
+              {isAuthenticated ? (
+                <motion.div whileTap={{ scale: 0.95 }}>
+                  <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:bg-sky-50 hover:text-sky-600"
+                  >
+                    Logout
+                  </button>
+                </motion.div>
+              ) : (
+                <motion.div whileTap={{ scale: 0.95 }}>
+                  <Link
+                    to="/signin"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:bg-sky-50 hover:text-sky-600"
+                    onClick={() => setOpen(false)}
+                  >
+                    Login
+                  </Link>
+                </motion.div>
+              )}
             </div>
           </motion.div>
         )}

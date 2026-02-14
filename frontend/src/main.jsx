@@ -2,9 +2,12 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import axios from 'axios'
+import { ConvexReactClient } from 'convex/react'
+import { ConvexAuthProvider } from '@convex-dev/auth/react'
 import App from './App.jsx'
 // import { ThemeProvider } from './contexts/ThemeContext'
 
+const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL ?? '');
 
 axios.defaults.withCredentials = true;
 
@@ -12,8 +15,10 @@ axios.defaults.withCredentials = true;
 axios.defaults.baseURL = "http://localhost:8000";
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* <ThemeProvider> */}
-      <App />
-    {/* </ThemeProvider> */}
+    <ConvexAuthProvider client={convex}>
+      {/* <ThemeProvider> */}
+        <App />
+      {/* </ThemeProvider> */}
+    </ConvexAuthProvider>
   </StrictMode>,
 )

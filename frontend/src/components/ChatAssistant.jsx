@@ -18,6 +18,42 @@ const ChatAssistant = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
+  // Predefined FAQ answers
+  const faqAnswers = {
+    'Lead':'Lead of Taakra 2026 is Syed Muhammad Raza Ali, this is his linked in profile: https://linkedin.com/in/razaali313',
+    'lead':'Lead of Taakra 2026 is Syed Muhammad Raza Ali, this is his linked in profile: https://linkedin.com/in/razaali313',
+    'hi': "Hello! 👋 How can I help you today?",
+    'hello': "Hello! 👋 How can I help you today?",
+    'hey': "Hello! 👋 How can I help you today?",
+    'what is your name': "Hey👋 My name is Dev AI. I am chat assistant talking on behalf of Taakra 2026",
+    'What is your name': "Hey👋 My name is Dev AI. I am chat assistant talking on behalf of Taakra 2026",
+    'Whats your name': "Hey👋 My name is Dev AI .I am chat assistant talking on behalf of Taakra 2026",
+    'Who are you': "Hey👋 My name is Dev AI .I am chat assistant talking on behalf of Taakra 2026",
+    'who are you': "Hey👋 My name is Dev AI .I am chat assistant talking on behalf of Taakra 2026",
+    'join': "To join Taakra 2026, visit our 'Join Team' page and fill out the registration form. We review applications regularly!",
+    'membership': "Membership is free for students. Visit the 'Join Team' page to apply. No prior experience is required!",
+    'events': "Check out our Events page to see upcoming hackathons, workshops, tech talks, and coding competitions. Most events are open to all students!",
+    'register': "You can register for events from our Events page. Click on any event and use the Register button to sign up.",
+    'hackathon': "We organize regular hackathons! Check the Events page for upcoming competitions. All skill levels are welcome!",
+    'workshop': "We offer workshops on web development, mobile apps, AI/ML, and more. Visit the Events page to see upcoming workshops.",
+    'team': "Visit our Team page to see current members. To join the core team, stay active and apply when positions open!",
+    'contact': "You can reach us through the Contact page, or send us a message. We'll get back to you as soon as possible!",
+    'location': "Taakra 2026 is a tech competition platform. Check the Contact page for details.",
+    'help': "I can help with questions about membership, events, team, and general club information. What would you like to know?",
+    'faq': "Check our FAQ page for answers to common questions about membership, events, and more!",
+    'jobs': "Visit our Job Board to see internship and job opportunities. We regularly post new positions!",
+    'blog': "Check out our Blogs section for technical articles, tutorials, and project showcases written by our members.",
+    'hall of fame': "The Hall of Fame showcases achievements of our members and alumni, including hackathon wins and notable projects!",
+    'alumni': "Alumni are welcome to attend events and mentor current members. Contact us for more information on alumni involvement.",
+    // 'discord': "Members receive access to our community platforms (Discord/Slack) after joining. Join us to get access!",
+    // 'slack': "Members receive access to our community platforms (Discord/Slack) after joining. Join us to get access!",
+    'code': "We welcome all programming languages! Common ones include Python, JavaScript, Java, C++, and more. Join our workshops to learn!",
+    'thank': "You're welcome! Is there anything else I can help you with?",
+    'thanks': "You're welcome! Is there anything else I can help you with?",
+    'bye': "Goodbye! Feel free to come back anytime if you have questions. 👋",
+    'default': "I'm not sure about that. Try asking about membership, events, team, jobs, or contact information. Or check our FAQ page for more details!"
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -244,7 +280,7 @@ const ChatAssistant = () => {
                   <ChatBubbleLeftRightIcon className="h-5 w-5 md:h-6 md:w-6 text-sky-600" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-white font-semibold text-sm md:text-base truncate">FCIT Devs Assistant</h3>
+                  <h3 className="text-white font-semibold text-sm md:text-base truncate">Taakra Assistant</h3>
                   <p className="text-xs text-sky-100">Online</p>
                 </div>
               </div>

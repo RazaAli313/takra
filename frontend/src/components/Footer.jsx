@@ -10,7 +10,7 @@ const Footer = () => {
   const [email, setEmail] = useState("");
   const [isSubscribing, setSubscribing] = useState(false);
   const links = [
-    { title: "Explore", items: [{ name: "Home", href: "/" }, { name: "About", href: "/about" }, { name: "Events", href: "/events" }, { name: "Blogs", href: "/blogs" }] },
+    { title: "Explore", items: [{ name: "Home", href: "/" }, { name: "About", href: "/about" }, { name: "Events", href: "/events" }, { name: "Competitions", href: "/competitions" }, { name: "Blogs", href: "/blogs" }, { name: "My Dashboard", href: "/dashboard" }] },
     { title: "Connect", items: [{ name: "Team", href: "/team" }, { name: "Hall of Fame", href: "/hall-of-fame" }, { name: "Contact", href: "/contact" }] },
   ];
 
@@ -41,7 +41,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
             <motion.div whileHover={{ scale: 1.05 }} className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-blue-600">
-              FCIT Developers Club
+              Taakra 2026
             </motion.div>
             <p className="text-slate-500 mb-6">
               Empowering the next generation of tech innovators.
@@ -99,7 +99,7 @@ const Footer = () => {
         </div>
         <div className="border-t border-slate-200 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-slate-500 text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} FCIT Developers Club. All rights reserved.
+            © {new Date().getFullYear()} Taakra 2026. All rights reserved.
           </p>
           <Link to="https://www.linkedin.com/in/razaali313" className="hover:text-sky-600 transition-colors mb-4 md:mb-0" target="_blank">
             Made with ❤️ and ☕ by <b>Syed Muhammad Raza Ali</b>

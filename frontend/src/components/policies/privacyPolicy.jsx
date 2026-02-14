@@ -35,7 +35,7 @@ const PrivacyPolicy = () => {
           <div className="prose prose-lg max-w-none">
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-blue-700 mb-4">1. Information We Collect</h2>
-              <p className="text-gray-700 mb-4">FCIT Developers Club ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
+              <p className="text-gray-700 mb-4">Taakra 2026 ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
               <p className="text-gray-700">We collect information you provide directly to us, including:</p>
               <ul className="list-disc pl-5 mt-2 text-gray-700">
                 <li>Contact information (name, email address, phone number)</li>
@@ -96,8 +96,8 @@ const PrivacyPolicy = () => {
               <h2 className="text-2xl font-bold text-blue-700 mb-4">8. Contact Us</h2>
               <p className="text-gray-700">If you have any questions about this Privacy Policy, please contact us at:</p>
               <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-                <p className="text-gray-700"><span className="font-semibold">Email:</span> fcit-developers.club@pucit.edu.pk</p>
-                <p className="text-gray-700"><span className="font-semibold">Address:</span> FCIT Developers Club, PUCIT, Lahore, Pakistan</p>
+                <p className="text-gray-700"><span className="font-semibold">Email:</span> contact@taakra2026.com</p>
+                <p className="text-gray-700"><span className="font-semibold">Address:</span> Taakra 2026</p>
               </div>
             </div>
           </div>

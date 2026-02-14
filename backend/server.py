@@ -39,6 +39,8 @@ from backend.api.Banner import router as banner_router
 from backend.api.FAQ import router as faq_router
 from backend.api.Job import router as job_router
 from backend.api.Event import router as event_router
+from backend.api.Competition import router as competition_router
+from backend.api.Category import router as category_router
 from backend.api.Blog import router as blog_router
 from backend.api.About import router as about_router
 from backend.api.Contact import router as contact_router
@@ -207,7 +209,9 @@ app.include_router(faq_router, prefix="/api")
 app.include_router(job_router, prefix="/api")
 app.include_router(team_router, prefix="/api")
 app.include_router(registrations_router, prefix="/api")
-app.include_router(event_router, prefix="/api") 
+app.include_router(event_router, prefix="/api")
+app.include_router(competition_router, prefix="/api")
+app.include_router(category_router, prefix="/api")
 app.include_router(blog_router, prefix="/api")
 app.include_router(about_router, prefix="/api")
 app.include_router(contact_router, prefix="/api")
@@ -217,7 +221,11 @@ app.include_router(settings_router, prefix="/api/admin")
 app.include_router(positions_router, prefix="/api")
 app.include_router(delegation_router, prefix="/api")
 from backend.api.admin.Metrics import router as metrics_router
+from backend.api.admin.SupportMembers import router as support_members_router
+from backend.api.admin.Me import router as admin_me_router
 app.include_router(metrics_router, prefix="/api/admin")
+app.include_router(support_members_router, prefix="/api/admin")
+app.include_router(admin_me_router, prefix="/api/admin")
 from backend.api.admin.Delegations import router as delegations_admin_router
 app.include_router(delegations_admin_router, prefix="/api/admin")
 from backend.api.CogentLabsRegistration import router as cogent_labs_registration_router
