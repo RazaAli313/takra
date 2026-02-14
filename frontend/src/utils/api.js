@@ -1,5 +1,6 @@
 // Centralized API base URL for frontend
-export const API_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL + '/api';
+const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL || 'http://localhost:8000';
+export const API_BASE_URL = BACKEND_BASE_URL + '/api';
 
 // Loader for reCAPTCHA v3 script
 export function loadRecaptchaScript(siteKey) {
