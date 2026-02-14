@@ -1,9 +1,40 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import type { Id } from "./_generated/dataModel";
+
+/**
+ * Returns the list of users who have at least one chat with the given admin.
+ * adminId is passed from the frontend (e.g. from VITE_ADMIN_ID in .env).
+ */
+export const listChatUsersForAdmin = query({
+  args: { adminId: v.string() },
+  handler: async (ctx, args) => {
+    const adminId = args.adminId;
+    if (!adminId) return [];
+    const chats = await ctx.db
+      .query("chats")
+      .withIndex("by_adminId", (q) => q.eq("adminId", adminId))
+      .collect();
+    const seen = new Set<string>();
+    const result: { id: string; name: string | null; email: string | null }[] = [];
+    for (const chat of chats) {
+      if (seen.has(chat.userId)) continue;
+      seen.add(chat.userId);
+      const user = await ctx.db.get(chat.userId as Id<"users">);
+      if (user)
+        result.push({
+          id: user._id,
+          name: user.name ?? null,
+          email: user.email ?? null,
+        });
+    }
+    return result;
+  },
+});
 
 /**
  * Get or create a chat between a user and an admin.
- * userId and adminId must be the IDs from your FastAPI backend.
+ * userId and adminId are Convex user IDs (string).
  */
 export const getOrCreateChat = mutation({
   args: {
