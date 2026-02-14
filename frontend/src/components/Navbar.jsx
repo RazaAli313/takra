@@ -19,6 +19,7 @@ const NavbarContent = () => {
     { name: "FAQ", path: "/faq" },
     { name: "Jobs", path: "/jobs" },
     { name: "Contact", path: "/contact" },
+    { name: "Chat", path: "/chat" },
   ];
 
   useEffect(() => {

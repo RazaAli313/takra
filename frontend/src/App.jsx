@@ -33,6 +33,7 @@ import BlogPost from './pages/BlogPost';
 import AdminHome from './pages/admin/Home';
 import AdminHallOfFame from './pages/admin/HallOfFame';
 import AdminMessages from './pages/admin/Messages';
+import ChatAdmin from './pages/ChatAdmin';
 import AdminFAQ from './pages/admin/FAQ';
 import AdminJobs from './pages/admin/Jobs';
 import Login from './pages/admin/Login';
@@ -326,6 +327,7 @@ function AppWrapper() {
             <Route path="/register" element={<CogentLabsRegistration />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/jobs" element={<Jobs />} />
+            <Route path="/chat" element={<ChatAdmin />} />
             <Route exact path="/error" element={<FakeErrorPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
@@ -399,8 +401,8 @@ function AppWrapper() {
         </AnimatePresence>
       </main>
       
-      {/* Don't show Footer on fake routes, admin, or member portal */}
-      {!location.pathname.startsWith('/fake') && !location.pathname.startsWith('/error') && !location.pathname.startsWith('/admin') && !location.pathname.startsWith('/member') && <Footer />}
+      {/* Don't show Footer on fake routes, admin, member portal, or chat */}
+      {!location.pathname.startsWith('/fake') && !location.pathname.startsWith('/error') && !location.pathname.startsWith('/admin') && !location.pathname.startsWith('/member') && location.pathname !== '/chat' && <Footer />}
     </div>
   );
 }
