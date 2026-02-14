@@ -188,14 +188,14 @@ async def request_registration_verification( request: Request,payload: dict = Bo
 
     # send email with code
     try:
-        ADMIN_EMAIL = os.getenv('ADMIN_EMAIL') or 'fcit-developers.club@pucit.edu.pk'
+        ADMIN_EMAIL = os.getenv('ADMIN_EMAIL') or 'contact@taakra2026.com'
         ADMIN_EMAIL_PASSWORD = os.getenv('ADMIN_EMAIL_PASSWORD') or os.getenv('ADMIN_EMAIL_PASSWORD') or ''
         SMTP_SERVER = os.getenv('SMTP_SERVER') or 'smtp.gmail.com'
         SMTP_PORT = int(os.getenv('SMTP_PORT') or 587)
         msg = EmailMessage()
         msg['From'] = ADMIN_EMAIL
         msg['To'] = email
-        msg['Subject'] = 'Your verification code for FCIT Developers Club Application'
+        msg['Subject'] = 'Your verification code for Taakra 2026 Application'
         # Try to use HTML template if available in backend/templates
         try:
             tpl_path = os.path.join(os.path.dirname(__file__), '..', 'templates', 'team_registration_template.html')

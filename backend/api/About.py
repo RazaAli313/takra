@@ -32,7 +32,7 @@ async def get_about_content(db):
         default_content = {
             "_id": "about_content",
             "founded_year": "2024",
-            "club_name": "FCIT Developers Club",
+            "club_name": "Taakra 2026",
             "member_count": "24",
             "activities": "hackathons, tech talks, workshops, and networking events",
             "features": [

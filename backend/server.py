@@ -222,8 +222,10 @@ app.include_router(positions_router, prefix="/api")
 app.include_router(delegation_router, prefix="/api")
 from backend.api.admin.Metrics import router as metrics_router
 from backend.api.admin.SupportMembers import router as support_members_router
+from backend.api.admin.Me import router as admin_me_router
 app.include_router(metrics_router, prefix="/api/admin")
 app.include_router(support_members_router, prefix="/api/admin")
+app.include_router(admin_me_router, prefix="/api/admin")
 from backend.api.admin.Delegations import router as delegations_admin_router
 app.include_router(delegations_admin_router, prefix="/api/admin")
 from backend.api.CogentLabsRegistration import router as cogent_labs_registration_router

@@ -49,11 +49,11 @@ async def subscribe(request:Request,subscriber: Subscriber, db=Depends(get_misc_
         html_content = f"""
         <html>
         <body>
-            <h2>Welcome to FCIT Developers Club Newsletter!</h2>
+            <h2>Welcome to Taakra 2026 Newsletter!</h2>
             <p>Thank you for subscribing. You'll now receive updates on our latest events, workshops, and club news.</p>
             <p>If you did not subscribe, please ignore this email or contact us.</p>
             <div style='margin-top:32px;font-size:0.9em;color:#888;'>
-                &copy; {datetime.now().year} FCIT Developers Club. All rights reserved.
+                &copy; {datetime.now().year} Taakra 2026. All rights reserved.
             </div>
         </body>
         </html>
@@ -68,11 +68,11 @@ async def subscribe(request:Request,subscriber: Subscriber, db=Depends(get_misc_
         )
 
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = "Subscription Confirmation - FCIT Developers Club"
+    msg["Subject"] = "Subscription Confirmation - Taakra 2026"
     msg["From"] = sender_email
     msg["To"] = receiver_email
     text = f"""
-    Thank you for subscribing to FCIT Developers Club newsletter!
+    Thank you for subscribing to Taakra 2026 newsletter!
     You'll now receive updates on our latest events, workshops, and club news.
     If you did not subscribe, please ignore this email or contact us.
     """

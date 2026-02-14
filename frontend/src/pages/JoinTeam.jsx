@@ -207,7 +207,7 @@ const JoinTeam = () => {
     <div className="min-h-screen bg-gradient-to-b from-indigo-900 via-gray-900 to-black text-white py-16">
       <div className="container mx-auto px-6 max-w-5xl">
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mt-8">Join FCIT Developers Club</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mt-8">Join Taakra 2026</h1>
           <p className="text-gray-300 mt-2">Apply for a team position or an executive role. Provide a short note on why you fit the role and optionally upload a profile picture.</p>
         </div>
 

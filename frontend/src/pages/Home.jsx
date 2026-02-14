@@ -114,7 +114,7 @@ const Home = () => {
       <div className="container mx-auto px-6 py-24 pt-32 flex flex-col items-center justify-center relative z-10">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center">
           <motion.h1 initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2, type: "spring" }} className="text-5xl md:text-7xl font-bold mb-6">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-500 via-blue-500 to-blue-600">FCIT Developers Club</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-500 via-blue-500 to-blue-600">Taakra 2026</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.5 }} className="text-xl md:text-2xl max-w-3xl mx-auto mb-12 text-slate-600">
             Where innovation meets creativity. Join us in shaping the future of technology.
@@ -227,7 +227,7 @@ const Home = () => {
       </div>
 
       <footer className="border-t border-slate-200 py-8 text-center text-slate-500 text-sm">
-        <div className="container mx-auto px-6">© {new Date().getFullYear()} FCIT Developers Club. All rights reserved.</div>
+        <div className="container mx-auto px-6">© {new Date().getFullYear()} Taakra 2026. All rights reserved.</div>
       </footer>
     </div>
   );

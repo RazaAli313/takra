@@ -35,12 +35,12 @@ const TermsAndConditions = () => {
           <div className="prose prose-lg max-w-none">
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-blue-700 mb-4">1. Acceptance of Terms</h2>
-              <p className="text-gray-700">By accessing or using the FCIT Developers Club website and services, you agree to be bound by these Terms and Conditions and our Privacy Policy. If you do not agree to these terms, please do not use our services.</p>
+              <p className="text-gray-700">By accessing or using the Taakra 2026 website and services, you agree to be bound by these Terms and Conditions and our Privacy Policy. If you do not agree to these terms, please do not use our services.</p>
             </div>
 
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-blue-700 mb-4">2. Intellectual Property</h2>
-              <p className="text-gray-700">All content on this website, including text, graphics, logos, images, and software, is the property of FCIT Developers Club or its content suppliers and is protected by international copyright laws. The compilation of all content on this site is the exclusive property of FCIT Developers Club.</p>
+              <p className="text-gray-700">All content on this website, including text, graphics, logos, images, and software, is the property of Taakra 2026 or its content suppliers and is protected by international copyright laws. The compilation of all content on this site is the exclusive property of Taakra 2026.</p>
             </div>
 
             <div className="mb-8">
@@ -62,7 +62,7 @@ const TermsAndConditions = () => {
 
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-blue-700 mb-4">5. Limitation of Liability</h2>
-              <p className="text-gray-700">FCIT Developers Club shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your access to or use of, or inability to access or use, our services.</p>
+              <p className="text-gray-700">Taakra 2026 shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your access to or use of, or inability to access or use, our services.</p>
             </div>
 
             <div className="mb-8">
@@ -89,8 +89,8 @@ const TermsAndConditions = () => {
               <h2 className="text-2xl font-bold text-blue-700 mb-4">10. Contact Information</h2>
               <p className="text-gray-700">If you have any questions about these Terms, please contact us at:</p>
               <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-                <p className="text-gray-700"><span className="font-semibold">Email:</span> fcit-developers.club@pucit.edu.pk</p>
-                <p className="text-gray-700"><span className="font-semibold">Address:</span> FCIT Developers Club, PUCIT, Lahore, Pakistan</p>
+                <p className="text-gray-700"><span className="font-semibold">Email:</span> contact@taakra2026.com</p>
+                <p className="text-gray-700"><span className="font-semibold">Address:</span> Taakra 2026</p>
               </div>
             </div>
           </div>

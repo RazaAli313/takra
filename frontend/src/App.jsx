@@ -22,6 +22,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatAssistant from './components/ChatAssistant';
 import AdminLayout from './layouts/AdminLayout';
+import { AdminAuthProvider } from './context/AdminAuthContext';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminAbout from './pages/admin/About';
 import AdminContact from './pages/admin/Contact';
@@ -368,7 +369,9 @@ function AppWrapper() {
             
             <Route path="/fake" element={
               <ProtectedRoute>
-                <AdminLayout />
+                <AdminAuthProvider>
+                  <AdminLayout />
+                </AdminAuthProvider>
               </ProtectedRoute>
             }>
               {/* <Route index element={<AdminDashboard />} /> */}

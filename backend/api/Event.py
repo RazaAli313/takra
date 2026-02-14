@@ -432,7 +432,7 @@ async def register_for_event(event_id: str, registration: EventRegistration, db=
         year=year
     )
     send_email_notification({
-        "to": "fcit-developers.club@pucit.edu.pk",
+        "to": os.getenv("ADMIN_EMAIL", "contact@taakra2026.com"),
         "subject": f"New Event Registration - {registration.team_name}",
         "html": admin_body
     })

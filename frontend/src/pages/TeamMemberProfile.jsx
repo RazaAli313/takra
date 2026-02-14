@@ -469,9 +469,9 @@ async function downloadProfileAsPDF(member) {
       pdf.setTextColor(30);
       if (logoDataUrl) {
         pdf.addImage(logoDataUrl, 'PNG', 30, 20, 40, 40);
-        pdf.text('FCIT Developers Club', 80, 40, { align: 'left' });
+        pdf.text('Taakra 2026', 80, 40, { align: 'left' });
       } else {
-        pdf.text('FCIT Developers Club', 30, 40, { align: 'left' });
+        pdf.text('Taakra 2026', 30, 40, { align: 'left' });
       }
       // Draw profile content below header
       pdf.addImage(imgData, 'PNG', 30, 30 + headerHeight, imgWidth, imgHeight);
@@ -500,9 +500,9 @@ async function downloadProfileAsPDF(member) {
         pdf.setTextColor(30);
         if (logoDataUrl) {
           pdf.addImage(logoDataUrl, 'PNG', 30, 20, 40, 40);
-          pdf.text('FCIT Developers Club', 80, 40, { align: 'left' });
+          pdf.text('Taakra 2026', 80, 40, { align: 'left' });
         } else {
-          pdf.text('FCIT Developers Club', 30, 40, { align: 'left' });
+          pdf.text('Taakra 2026', 30, 40, { align: 'left' });
         }
         // Draw profile chunk below header
         pdf.addImage(sliceData, 'PNG', 30, 30 + headerHeight, sliceW, sliceHpt);
@@ -559,7 +559,7 @@ async function downloadProfileAsPDF(member) {
     // Add header with logo and club name, and footer with page numbers
     const totalPages = pdf.internal.getNumberOfPages();
     // Prepare footer info
-    const email = member.email || 'fcit-developers.club@pucit.edu.pk';
+    const email = member.email || 'contact@taakra2026.com';
     const website = (member.socials && member.socials.website) ? member.socials.website : 'https://fdc-pucit.org';
     for (let i = 1; i <= totalPages; i++) {
       pdf.setPage(i);
@@ -567,9 +567,9 @@ async function downloadProfileAsPDF(member) {
       pdf.setTextColor(30);
       if (logoDataUrl) {
         pdf.addImage(logoDataUrl, 'PNG', 30, 20, 40, 40);
-        pdf.text('FCIT Developers Club', 80, 40, { align: 'left' });
+        pdf.text('Taakra 2026', 80, 40, { align: 'left' });
       } else {
-        pdf.text('FCIT Developers Club', 30, 40, { align: 'left' });
+        pdf.text('Taakra 2026', 30, 40, { align: 'left' });
       }
       pdf.setFontSize(10);
       pdf.setTextColor(100);
