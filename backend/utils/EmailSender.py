@@ -7,9 +7,10 @@ from email.message import EmailMessage
 from backend.config import ADMIN_EMAIL
 router = APIRouter()
 # SMTP Config (you must use your own email and App Password for Gmail)
-SMTP_USER = "fcit-developers.club@pucit.edu.pk"             # <-- your Gmail
-SMTP_PASS = "bibh nlni xirw ytrl"                # <-- App Password, not your normal password
-RECEIVER_EMAIL = "fcit-developers.club@pucit.edu.pk"
+import os
+SMTP_USER = os.getenv("ADMIN_EMAIL", "contact@taakra2026.com")             # <-- your Gmail
+SMTP_PASS = os.getenv("ADMIN_EMAIL_PASSWORD", "")                # <-- App Password
+RECEIVER_EMAIL = os.getenv("ADMIN_EMAIL", "contact@taakra2026.com")
 
 @router.post("/contact")
 async def send_email(data: Contact):
@@ -41,8 +42,8 @@ Message:
 
 def send_email_notification(contact: ContactMessage):
     print("Email sending")
-    sender_email = "fcit-developers.club@pucit.edu.pk"
-    app_password = "bibh nlni xirw ytrl"
+    sender_email = os.getenv("ADMIN_EMAIL", "contact@taakra2026.com")
+    app_password = os.getenv("ADMIN_EMAIL_PASSWORD", "")
     receiver_email =sender_email  # Or a team email inbox
 
     msg = MIMEMultipart("alternative")

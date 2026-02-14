@@ -258,7 +258,7 @@ const BlogApply = () => {
               </span>
             </h1>
             <p className="text-gray-300">
-              Share your knowledge and insights with the FCIT Developers Club community
+              Share your knowledge and insights with the Taakra 2026 community
             </p>
           </div>
 

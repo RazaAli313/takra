@@ -472,7 +472,7 @@ const AdminHome = () => {
         >
           <h2 className="text-4xl font-bold mb-8 text-center">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
-              FCIT DevClub Admin
+              Taakra 2026 Admin
             </span>
           </h2>
           
