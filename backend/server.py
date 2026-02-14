@@ -46,6 +46,7 @@ from backend.api.About import router as about_router
 from backend.api.Contact import router as contact_router
 from backend.api.HallofFame import router as halloffame_router
 from backend.api.Subscribe import router as subscribe_router
+from backend.api.UserProfile import router as user_profile_router
 from backend.api.admin.Settings import router as settings_router
 from backend.api.Positions import router as positions_router
 from backend.api.Delegation import router as delegation_router
@@ -216,6 +217,7 @@ app.include_router(blog_router, prefix="/api")
 app.include_router(about_router, prefix="/api")
 app.include_router(contact_router, prefix="/api")
 app.include_router(halloffame_router, prefix="/api")
+app.include_router(user_profile_router, prefix="/api")
 app.include_router(subscribe_router, prefix="/api")
 app.include_router(settings_router, prefix="/api/admin")
 app.include_router(positions_router, prefix="/api")

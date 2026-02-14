@@ -44,6 +44,7 @@ import AdminChat from './pages/admin/Chat';
 import ChatAdmin from './pages/ChatAdmin';
 import UserSignUp from './pages/UserSignUp';
 import UserSignIn from './pages/UserSignIn';
+import Profile from './pages/Profile';
 import AdminFAQ from './pages/admin/FAQ';
 import AdminJobs from './pages/admin/Jobs';
 import Login from './pages/admin/Login';
@@ -354,6 +355,7 @@ function AppWrapper() {
             <Route path="/chat" element={<ChatAdmin />} />
             <Route path="/signup" element={<UserSignUp />} />
             <Route path="/signin" element={<UserSignIn />} />
+            <Route path="/profile" element={<Profile />} />
             <Route exact path="/error" element={<FakeErrorPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />

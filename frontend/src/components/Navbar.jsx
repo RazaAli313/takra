@@ -1,17 +1,32 @@
-import { memo, useState, useEffect } from 'react';
+import { memo, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { useConvexAuth } from 'convex/react';
+import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { useConvexAuth, useQuery } from 'convex/react';
 import { useAuthActions } from '@convex-dev/auth/react';
 import { API_BASE_URL } from '../utils/api';
+import { api } from '../convex/_generated/api';
 
 const NavbarContent = () => {
   const [open, setOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef(null);
   const [banner, setBanner] = useState(null);
   const [showBanner, setShowBanner] = useState(true);
   const { isAuthenticated } = useConvexAuth();
   const { signOut } = useAuthActions();
+  const profile = useQuery(api.user.getProfile, isAuthenticated ? {} : 'skip');
+  const user = useQuery(api.user.current, isAuthenticated ? {} : 'skip');
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   const navItems = [
     { name: "Home", path: "/" },
@@ -113,15 +128,61 @@ const NavbarContent = () => {
                 </motion.div>
               ))}
               {isAuthenticated ? (
-                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-                  <button
+                <div className="relative" ref={profileRef}>
+                  <motion.button
                     type="button"
-                    onClick={handleSignOut}
-                    className="px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setProfileOpen((v) => !v)}
+                    className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-sky-200 bg-white hover:border-sky-400 hover:bg-sky-50 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+                    aria-label="User menu"
                   >
-                    Logout
-                  </button>
-                </motion.div>
+                    {profile?.imageUrl ? (
+                      <img
+                        src={profile.imageUrl}
+                        alt="Profile"
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <UserCircleIcon className="h-6 w-6 text-sky-500" />
+                    )}
+                  </motion.button>
+                  <AnimatePresence>
+                    {profileOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 mt-2 w-48 py-1 bg-white rounded-xl border border-slate-200 shadow-lg z-50"
+                      >
+                        <div className="px-4 py-2 border-b border-slate-100">
+                          <p className="text-sm font-medium text-slate-800 truncate">
+                            {profile?.displayName || user?.name || user?.email || 'User'}
+                          </p>
+                          <p className="text-xs text-slate-500 truncate">{user?.email}</p>
+                        </div>
+                        <Link
+                          to="/profile"
+                          className="block px-4 py-2 text-sm text-slate-600 hover:bg-sky-50 hover:text-sky-600"
+                          onClick={() => setProfileOpen(false)}
+                        >
+                          Profile
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setProfileOpen(false);
+                            handleSignOut();
+                          }}
+                          className="block w-full text-left px-4 py-2 text-sm text-slate-600 hover:bg-red-50 hover:text-red-600"
+                        >
+                          Logout
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               ) : (
                 <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
                   <Link

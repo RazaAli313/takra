@@ -28,4 +28,11 @@ export default defineSchema({
     /** Message body (HTML from Quill) */
     content: v.string(),
   }).index("by_chatId", ["chatId"]),
+
+  /** User profiles: display name and avatar (keyed by auth user id) */
+  userProfiles: defineTable({
+    userId: v.string(),
+    displayName: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+  }).index("by_userId", ["userId"]),
 });
