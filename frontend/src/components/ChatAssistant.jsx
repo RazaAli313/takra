@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChatBubbleLeftRightIcon, XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { API_BASE_URL } from '../utils/api';
 
 const ChatAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,12 +9,13 @@ const ChatAssistant = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hello! 👋 I'm your virtual assistant. How can I help you today?",
+      text: "Hello! 👋 I'm your AI-powered assistant. I can answer questions based on the TAAKRA rulebook and other documents. How can I help you today?",
       sender: 'bot',
       timestamp: new Date()
     }
   ]);
   const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
   // Predefined FAQ answers
@@ -70,56 +72,94 @@ const ChatAssistant = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const findAnswer = (question) => {
-    const lowerQuestion = question.toLowerCase().trim();
-    
-    // Check for exact matches or keywords
-    for (const [key, answer] of Object.entries(faqAnswers)) {
-      if (lowerQuestion.includes(key) || lowerQuestion === key) {
-        return answer;
-      }
-    }
-    
-    return faqAnswers.default;
-  };
-
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || isLoading) return;
 
+    const userQuery = inputValue.trim();
+    
     // Add user message
     const userMessage = {
       id: messages.length + 1,
-      text: inputValue,
+      text: userQuery,
       sender: 'user',
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
+    setInputValue('');
+    setIsLoading(true);
 
-    // Simulate bot thinking (you can remove this later when backend is ready)
-    setTimeout(() => {
-      const botAnswer = findAnswer(inputValue);
+    const apiUrl = `${API_BASE_URL}/chatbot/chat`;
+    console.log('Calling chatbot API:', apiUrl);
+
+    try {
+      // Call RAG chatbot API
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: userQuery,
+          top_k: 5
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.detail || `HTTP error! status: ${response.status}`;
+        
+        // Provide user-friendly error messages
+        if (response.status === 503 && errorMessage.includes('Qdrant')) {
+          throw new Error('Vector database (Qdrant) is not running. Please start Qdrant with: docker run -p 6333:6333 qdrant/qdrant');
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      
+      // Add bot response from LLM
       const botMessage = {
         id: messages.length + 2,
-        text: botAnswer,
+        text: data.response || "I'm sorry, I couldn't generate a response. Please try again.",
         sender: 'bot',
-        timestamp: new Date()
+        timestamp: new Date(),
+        sources: data.sources || []
       };
-      setMessages(prev => [...prev, botMessage]);
-    }, 500);
 
-    setInputValue('');
+      setMessages(prev => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Error calling chatbot API:', error);
+      console.error('API URL used:', `${API_BASE_URL}/chatbot/chat`);
+      
+      // Show error message instead of fallback
+      const errorMessage = error.message || 'Failed to connect to the chatbot service';
+      const botMessage = {
+        id: messages.length + 2,
+        text: `I'm sorry, I encountered an error: ${errorMessage}. Please check if the backend server is running and the API endpoint is correct.`,
+        sender: 'bot',
+        timestamp: new Date(),
+        error: true
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const quickQuestions = [
-    "How do I join?",
-    "What events are coming?",
-    "How can I contact you?",
-    "Tell me about the team"
+    "What is TAAKRA?",
+    "What are the competition rules?",
+    "How do I register?",
+    "Tell me about the event"
   ];
 
-  const handleQuickQuestion = (question) => {
+  const handleQuickQuestion = async (question) => {
+    if (isLoading) return;
+
     // Add user message directly
     const userMessage = {
       id: messages.length + 1,
@@ -129,18 +169,66 @@ const ChatAssistant = () => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    setIsLoading(true);
 
-    // Get bot answer and add it
-    setTimeout(() => {
-      const botAnswer = findAnswer(question);
+    const apiUrl = `${API_BASE_URL}/chatbot/chat`;
+    console.log('Calling chatbot API (quick question):', apiUrl);
+
+    try {
+      // Call RAG chatbot API
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: question,
+          top_k: 5
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.detail || `HTTP error! status: ${response.status}`;
+        
+        // Provide user-friendly error messages
+        if (response.status === 503 && errorMessage.includes('Qdrant')) {
+          throw new Error('Vector database (Qdrant) is not running. Please start Qdrant with: docker run -p 6333:6333 qdrant/qdrant');
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      
+      // Add bot response from LLM
       const botMessage = {
         id: messages.length + 2,
-        text: botAnswer,
+        text: data.response || "I'm sorry, I couldn't generate a response. Please try again.",
         sender: 'bot',
-        timestamp: new Date()
+        timestamp: new Date(),
+        sources: data.sources || []
       };
+
       setMessages(prev => [...prev, botMessage]);
-    }, 500);
+    } catch (error) {
+      console.error('Error calling chatbot API:', error);
+      console.error('API URL used:', `${API_BASE_URL}/chatbot/chat`);
+      
+      // Show error message instead of fallback
+      const errorMessage = error.message || 'Failed to connect to the chatbot service';
+      const botMessage = {
+        id: messages.length + 2,
+        text: `I'm sorry, I encountered an error: ${errorMessage}. Please check if the backend server is running and the API endpoint is correct.`,
+        sender: 'bot',
+        timestamp: new Date(),
+        error: true
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -222,17 +310,45 @@ const ChatAssistant = () => {
                     }`}
                   >
                     <p className="text-xs md:text-sm whitespace-pre-wrap break-words">{message.text}</p>
+                    {message.sources && message.sources.length > 0 && (
+                      <p className="text-[10px] md:text-xs mt-1.5 opacity-70 italic">
+                        Sources: {message.sources.join(', ')}
+                      </p>
+                    )}
+                    {message.error && (
+                      <p className="text-[10px] md:text-xs mt-1.5 opacity-70 italic text-red-600">
+                        (Service error)
+                      </p>
+                    )}
                     <p className="text-[10px] md:text-xs mt-1 opacity-70">
                       {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
                 </motion.div>
               ))}
+              {isLoading && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex justify-start"
+                >
+                  <div className="max-w-[85%] md:max-w-[80%] rounded-lg p-2.5 md:p-3 bg-slate-200 text-slate-800">
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-1">
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                      </div>
+                      <span className="text-xs md:text-sm text-slate-600">Thinking...</span>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
               <div ref={messagesEndRef} />
             </div>
 
             {/* Quick Questions */}
-            {messages.length <= 1 && (
+            {messages.length <= 1 && !isLoading && (
               <div className="px-3 md:px-4 pb-2 relative z-10 flex-shrink-0">
                 <p className="text-xs text-slate-500 mb-2">Quick questions:</p>
                 <div className="flex flex-wrap gap-1.5 md:gap-2">
@@ -266,10 +382,14 @@ const ChatAssistant = () => {
                 />
                 <button
                   type="submit"
-                  disabled={!inputValue.trim()}
+                  disabled={!inputValue.trim() || isLoading}
                   className="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 md:p-2.5 rounded-lg transition-all flex-shrink-0"
                 >
-                  <PaperAirplaneIcon className="h-4 w-4 md:h-5 md:w-5" />
+                  {isLoading ? (
+                    <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    <PaperAirplaneIcon className="h-4 w-4 md:h-5 md:w-5" />
+                  )}
                 </button>
               </div>
               <p className="text-[10px] md:text-xs text-slate-500 text-center mt-2">
