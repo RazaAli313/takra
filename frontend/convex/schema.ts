@@ -1,11 +1,13 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { authTables } from "@convex-dev/auth/server";
 
 /**
- * Chat schema for user–admin messaging.
- * userId and adminId are external IDs from the FastAPI backend.
+ * Schema: Convex Auth tables + chat/messages.
+ * userId and adminId in chats are external IDs from the FastAPI backend.
  */
 export default defineSchema({
+  ...authTables,
   /** Chats: one per user–admin conversation */
   chats: defineTable({
     /** User ID from FastAPI backend */

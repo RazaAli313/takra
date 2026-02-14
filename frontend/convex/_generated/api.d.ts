@@ -8,7 +8,10 @@
  * @module
  */
 
+import type * as auth from "../auth.js";
 import type * as chat from "../chat.js";
+import type * as http from "../http.js";
+import type * as user from "../user.js";
 
 import type {
   ApiFromModules,
@@ -17,7 +20,10 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  auth: typeof auth;
   chat: typeof chat;
+  http: typeof http;
+  user: typeof user;
 }>;
 
 /**
