@@ -155,7 +155,7 @@ const ChatAssistant = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-20 md:bottom-24 right-4 md:right-6 z-50 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white p-3 md:p-4 rounded-full shadow-2xl transition-all duration-300 flex items-center justify-center group"
+            className="fixed bottom-20 md:bottom-24 right-4 md:right-6 z-50 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white p-3 md:p-4 rounded-full shadow-2xl shadow-sky-200 transition-all duration-300 flex items-center justify-center group"
             aria-label="Open chat assistant"
           >
             <ChatBubbleLeftRightIcon className="h-5 w-5 md:h-6 md:w-6" />
@@ -183,17 +183,17 @@ const ChatAssistant = () => {
               animate={isMobile ? { y: 0, opacity: 1 } : { x: 0, opacity: 1 }}
               exit={isMobile ? { y: '100%', opacity: 0 } : { x: 400, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed bottom-20 md:bottom-24 right-0 md:right-6 left-0 md:left-auto z-50 w-full md:w-96 h-[calc(100vh-5rem)] md:h-[600px] max-h-[600px] md:max-h-none bg-gray-800 rounded-t-2xl md:rounded-xl shadow-2xl border border-gray-700 flex flex-col overflow-hidden"
+              className="fixed bottom-20 md:bottom-24 right-0 md:right-6 left-0 md:left-auto z-50 w-full md:w-96 h-[calc(100vh-5rem)] md:h-[600px] max-h-[600px] md:max-h-none bg-white rounded-t-2xl md:rounded-xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden"
             >
             {/* Header */}
-            <div className="bg-gradient-to-r from-cyan-600 to-blue-700 p-3 md:p-4 flex items-center justify-between flex-shrink-0">
+            <div className="bg-gradient-to-r from-sky-500 to-blue-600 p-3 md:p-4 flex items-center justify-between flex-shrink-0">
               <div className="flex items-center gap-2 md:gap-3">
                 <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-                  <ChatBubbleLeftRightIcon className="h-5 w-5 md:h-6 md:w-6 text-cyan-600" />
+                  <ChatBubbleLeftRightIcon className="h-5 w-5 md:h-6 md:w-6 text-sky-600" />
                 </div>
                 <div className="min-w-0">
                   <h3 className="text-white font-semibold text-sm md:text-base truncate">FCIT Devs Assistant</h3>
-                  <p className="text-xs text-cyan-100">Online</p>
+                  <p className="text-xs text-sky-100">Online</p>
                 </div>
               </div>
               <button
@@ -206,7 +206,7 @@ const ChatAssistant = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 bg-gray-900/50">
+            <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 bg-slate-50">
               {messages.map((message) => (
                 <motion.div
                   key={message.id}
@@ -217,8 +217,8 @@ const ChatAssistant = () => {
                   <div
                     className={`max-w-[85%] md:max-w-[80%] rounded-lg p-2.5 md:p-3 ${
                       message.sender === 'user'
-                        ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white'
-                        : 'bg-gray-700 text-gray-100'
+                        ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white'
+                        : 'bg-slate-200 text-slate-800'
                     }`}
                   >
                     <p className="text-xs md:text-sm whitespace-pre-wrap break-words">{message.text}</p>
@@ -234,7 +234,7 @@ const ChatAssistant = () => {
             {/* Quick Questions */}
             {messages.length <= 1 && (
               <div className="px-3 md:px-4 pb-2 relative z-10 flex-shrink-0">
-                <p className="text-xs text-gray-400 mb-2">Quick questions:</p>
+                <p className="text-xs text-slate-500 mb-2">Quick questions:</p>
                 <div className="flex flex-wrap gap-1.5 md:gap-2">
                   {quickQuestions.map((question, idx) => (
                     <button
@@ -245,7 +245,7 @@ const ChatAssistant = () => {
                         e.stopPropagation();
                         handleQuickQuestion(question);
                       }}
-                      className="px-2.5 md:px-3 py-1 text-[10px] md:text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-full transition-colors cursor-pointer active:scale-95 break-words"
+                      className="px-2.5 md:px-3 py-1 text-[10px] md:text-xs bg-slate-200 hover:bg-sky-100 text-slate-700 rounded-full transition-colors cursor-pointer active:scale-95 break-words"
                     >
                       {question}
                     </button>
@@ -255,24 +255,24 @@ const ChatAssistant = () => {
             )}
 
             {/* Input */}
-            <form onSubmit={handleSend} className="p-3 md:p-4 border-t border-gray-700 bg-gray-800 flex-shrink-0">
+            <form onSubmit={handleSend} className="p-3 md:p-4 border-t border-slate-200 bg-white flex-shrink-0">
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Type your message..."
-                  className="flex-1 bg-gray-700 border border-gray-600 rounded-lg px-3 md:px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 text-xs md:text-sm"
+                  className="flex-1 bg-slate-100 border border-slate-200 rounded-lg px-3 md:px-4 py-2 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 text-xs md:text-sm"
                 />
                 <button
                   type="submit"
                   disabled={!inputValue.trim()}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 md:p-2.5 rounded-lg transition-all flex-shrink-0"
+                  className="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 md:p-2.5 rounded-lg transition-all flex-shrink-0"
                 >
                   <PaperAirplaneIcon className="h-4 w-4 md:h-5 md:w-5" />
                 </button>
               </div>
-              <p className="text-[10px] md:text-xs text-gray-500 text-center mt-2">
+              <p className="text-[10px] md:text-xs text-slate-500 text-center mt-2">
                 Errors and omissions are expected
               </p>
             </form>

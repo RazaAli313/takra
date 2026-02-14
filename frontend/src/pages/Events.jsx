@@ -277,15 +277,15 @@ const Events = () => {
               </div>
             )}
             
-            <h3 className="text-xl font-bold mb-4 text-white">{event.title}</h3>
-            <p className="text-gray-300 mb-4 flex-grow">{event.description}</p>
+            <h3 className="text-xl font-bold mb-4 text-slate-800">{event.title}</h3>
+            <p className="text-slate-600 mb-4 flex-grow">{event.description}</p>
             
             {event.modules && event.modules.length > 0 && (
               <div className="mb-4">
-                <p className="text-sm font-medium text-gray-400 mb-2">Modules:</p>
+                <p className="text-sm font-medium text-slate-500 mb-2">Modules:</p>
                 <div className="flex flex-wrap gap-2">
                   {event.modules.map((module, index) => (
-                    <span key={index} className="px-2 py-1 bg-purple-900 text-purple-200 text-xs rounded-full">
+                    <span key={index} className="px-2 py-1 bg-sky-100 text-sky-700 text-xs rounded-full">
                       {module} {event.module_amounts && event.module_amounts[module] && `- ${event.module_amounts[module]}`} pkr
                     </span>
                   ))}
@@ -293,7 +293,7 @@ const Events = () => {
               </div>
             )}
             
-            <div className="space-y-3 text-sm text-gray-400 mb-4">
+            <div className="space-y-3 text-sm text-slate-500 mb-4">
               <div className="flex items-center">
                 <CalendarIcon className="h-4 w-4 mr-2" />
                 <span>{event.date}</span>
@@ -333,8 +333,8 @@ const Events = () => {
                 disabled={!event.registration_open}
                 className={`px-4 py-2 rounded-lg font-medium text-sm ${
                   event.registration_open
-                    ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:opacity-90"
-                    : "bg-gray-700 text-gray-500 cursor-not-allowed"
+                    ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:opacity-90 shadow-sm"
+                    : "bg-slate-200 text-slate-500 cursor-not-allowed"
                 }`}
               >
                 Register
@@ -345,17 +345,17 @@ const Events = () => {
       </div>
 
       {showRegistration && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-white">
+              <h3 className="text-xl font-bold text-slate-800">
                 {formStep === 1 && "Team Registration"}
                 {formStep === 2 && "Select Modules"}
                 {formStep === 3 && "Payment Details"}
               </h3>
               <button 
                 onClick={resetForms}
-                className="text-gray-400 hover:text-white"
+                className="text-slate-500 hover:text-slate-800"
               >
                 <XMarkIcon className="h-6 w-6" />
               </button>
@@ -364,22 +364,22 @@ const Events = () => {
             {/* Step 1: Team Registration Form */}
             {formStep === 1 && (
               <div className="space-y-4">
-                <p className="text-gray-300 text-sm mb-2">Registering for: <span className="font-semibold text-white">{currentEvent.title}</span></p>
+                <p className="text-slate-600 text-sm mb-2">Registering for: <span className="font-semibold text-slate-800">{currentEvent.title}</span></p>
                 
                 <div>
-                  <label className="block text-gray-400 mb-2 text-sm">Team Name *</label>
+                  <label className="block text-slate-500 mb-2 text-sm">Team Name *</label>
                   <input
                     type="text"
                     value={teamName}
                     onChange={e => setTeamName(e.target.value)}
-                    className={`w-full bg-gray-700 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white ${
-                      teamNameAvailable === false ? "border-red-500" : teamNameAvailable === true ? "border-green-500" : "border-gray-600"
+                    className={`w-full bg-slate-100 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 text-slate-800 ${
+                      teamNameAvailable === false ? "border-red-500" : teamNameAvailable === true ? "border-green-500" : "border-slate-200"
                     }`}
                     placeholder="Enter your team name"
                   />
                   {teamNameChecking && (
-                    <p className="mt-1.5 text-sm text-gray-400 flex items-center gap-1">
-                      <span className="inline-block w-4 h-4 border-2 border-gray-500 border-t-purple-500 rounded-full animate-spin" />
+                    <p className="mt-1.5 text-sm text-slate-500 flex items-center gap-1">
+                      <span className="inline-block w-4 h-4 border-2 border-slate-300 border-t-sky-500 rounded-full animate-spin" />
                       Checking...
                     </p>
                   )}
@@ -398,13 +398,13 @@ const Events = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <h4 className="text-gray-300 font-semibold">Team Members (1-3 members)</h4>
+                  <h4 className="text-slate-600 font-semibold">Team Members (1-3 members)</h4>
                   {members.map((member, idx) => (
-                    <div key={idx} className="border border-gray-600 rounded-lg p-4">
-                      <h5 className="text-purple-400 font-medium mb-3">Member {idx + 1} {idx === 0 && <span className="text-red-500">*</span>}</h5>
+                    <div key={idx} className="border border-slate-200 rounded-lg p-4">
+                      <h5 className="text-sky-600 font-medium mb-3">Member {idx + 1} {idx === 0 && <span className="text-red-500">*</span>}</h5>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
-                          <label className="block text-gray-400 mb-1 text-xs">Full Name *</label>
+                          <label className="block text-slate-500 mb-1 text-xs">Full Name *</label>
                           <input
                             type="text"
                             value={member.name}
@@ -413,12 +413,12 @@ const Events = () => {
                               updated[idx].name = e.target.value;
                               setMembers(updated);
                             }}
-                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm"
+                            className="w-full bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 text-sm"
                             placeholder="Full Name"
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-400 mb-1 text-xs">Email *</label>
+                          <label className="block text-slate-500 mb-1 text-xs">Email *</label>
                           <input
                             type="email"
                             value={member.email}
@@ -427,12 +427,12 @@ const Events = () => {
                               updated[idx].email = e.target.value;
                               setMembers(updated);
                             }}
-                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm"
+                            className="w-full bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 text-sm"
                             placeholder="Email"
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-400 mb-1 text-xs">Phone Number</label>
+                          <label className="block text-slate-500 mb-1 text-xs">Phone Number</label>
                           <input
                             type="tel"
                             value={member.phone}
@@ -441,12 +441,12 @@ const Events = () => {
                               updated[idx].phone = e.target.value;
                               setMembers(updated);
                             }}
-                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm"
+                            className="w-full bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 text-sm"
                             placeholder="Phone Number"
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-400 mb-1 text-xs">University Name</label>
+                          <label className="block text-slate-500 mb-1 text-xs">University Name</label>
                           <input
                             type="text"
                             value={member.university_name}
@@ -455,12 +455,12 @@ const Events = () => {
                               updated[idx].university_name = e.target.value;
                               setMembers(updated);
                             }}
-                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm"
+                            className="w-full bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 text-sm"
                             placeholder="University Name"
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-400 mb-1 text-xs">University Roll No</label>
+                          <label className="block text-slate-500 mb-1 text-xs">University Roll No</label>
                           <input
                             type="text"
                             value={member.university_roll_no}
@@ -469,12 +469,12 @@ const Events = () => {
                               updated[idx].university_roll_no = e.target.value;
                               setMembers(updated);
                             }}
-                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm"
+                            className="w-full bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 text-sm"
                             placeholder="University Roll No"
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-400 mb-1 text-xs">Batch</label>
+                          <label className="block text-slate-500 mb-1 text-xs">Batch</label>
                           <input
                             type="text"
                             value={member.batch}
@@ -483,7 +483,7 @@ const Events = () => {
                               updated[idx].batch = e.target.value;
                               setMembers(updated);
                             }}
-                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm"
+                            className="w-full bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 text-sm"
                             placeholder="Batch (e.g F22)"
                           />
                         </div>
@@ -498,7 +498,7 @@ const Events = () => {
                 <div className="flex justify-between space-x-3 mt-6">
                   <button
                     onClick={resetForms}
-                    className="px-4 py-2 bg-gray-700 rounded-lg text-white font-medium text-sm"
+                    className="px-4 py-2 bg-slate-100 rounded-lg text-slate-800 font-medium text-sm"
                   >
                     Cancel
                   </button>
@@ -507,8 +507,8 @@ const Events = () => {
                     disabled={teamNameAvailable === false || teamNameChecking}
                     className={`px-4 py-2 rounded-lg font-medium text-sm ${
                       teamNameAvailable === false || teamNameChecking
-                        ? "bg-gray-700 text-gray-500 cursor-not-allowed"
-                        : "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:opacity-90"
+                        ? "bg-slate-100 text-gray-500 cursor-not-allowed"
+                        : "bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:opacity-90"
                     }`}
                   >
                     Select Modules
@@ -528,8 +528,8 @@ const Events = () => {
                       key={module}
                       className={`p-4 rounded-lg border cursor-pointer transition-colors ${
                         selectedModules.includes(module)
-                          ? "border-purple-500 bg-purple-900 bg-opacity-20"
-                          : "border-gray-600 hover:border-gray-500"
+                          ? "border-sky-500 bg-sky-100 bg-opacity-20"
+                          : "border-slate-200 hover:border-gray-500"
                       }`}
                       onClick={() => toggleModuleSelection(module)}
                     >
@@ -537,7 +537,7 @@ const Events = () => {
                         <div className="flex items-center">
                           <div className={`h-5 w-5 rounded-full border mr-3 flex items-center justify-center ${
                             selectedModules.includes(module)
-                              ? "border-purple-500 bg-purple-500"
+                              ? "border-sky-500 bg-sky-500"
                               : "border-gray-500"
                           }`}>
                             {selectedModules.includes(module) && (
@@ -545,7 +545,7 @@ const Events = () => {
                             )}
                           </div>
                           <div>
-                            <h4 className="font-medium text-white">{module}</h4>
+                            <h4 className="font-medium text-slate-800">{module}</h4>
                             {currentEvent.module_amounts && currentEvent.module_amounts[module] && (
                               <p className="text-sm text-green-400">{currentEvent.module_amounts[module]} pkr</p>
                             )}
@@ -559,7 +559,7 @@ const Events = () => {
                 <div className="flex justify-between space-x-3 mt-6">
                   <button
                     onClick={() => setFormStep(1)}
-                    className="px-4 py-2 bg-gray-700 rounded-lg text-white font-medium text-sm"
+                    className="px-4 py-2 bg-slate-100 rounded-lg text-slate-800 font-medium text-sm"
                   >
                     Back
                   </button>
@@ -568,13 +568,13 @@ const Events = () => {
   disabled={selectedModules.length === 0 || isProcessing}
   className={`px-4 py-2 rounded-lg font-medium text-sm ${
     selectedModules.length === 0 || isProcessing
-      ? "bg-gray-700 text-gray-500 cursor-not-allowed"
-      : "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:opacity-90"
+      ? "bg-slate-100 text-gray-500 cursor-not-allowed"
+      : "bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:opacity-90"
   }`}
 >
   {isProcessing ? (
     <span className="flex items-center justify-center">
-      <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <svg className="animate-spin h-5 w-5 mr-2 text-slate-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
       </svg>
@@ -595,20 +595,20 @@ const Events = () => {
                   Complete your registration for the selected modules:
                 </p>
                 {/* Static Bank Details */}
-                <div className="bg-gray-700 rounded-lg p-4 mb-4 border border-gray-600">
-                  <h4 className="font-semibold text-white mb-2">Bank Details for Payment</h4>
+                <div className="bg-slate-100 rounded-lg p-4 mb-4 border border-slate-200">
+                  <h4 className="font-semibold text-slate-800 mb-2">Bank Details for Payment</h4>
                   <div className="space-y-1 text-sm text-gray-300">
-                    <div><span className="font-bold text-white">Title:</span> RAZA ALI</div>
-                    <div><span className="font-bold text-white">Bank Name:</span> Bank Islami</div>
-                    <div><span className="font-bold text-white">Account No.:</span> 211100356960001</div>
-                    <div><span className="font-bold text-white">IBAN:</span> PK49BKIP0211100356960001</div>
+                    <div><span className="font-bold text-slate-800">Title:</span> RAZA ALI</div>
+                    <div><span className="font-bold text-slate-800">Bank Name:</span> Bank Islami</div>
+                    <div><span className="font-bold text-slate-800">Account No.:</span> 211100356960001</div>
+                    <div><span className="font-bold text-slate-800">IBAN:</span> PK49BKIP0211100356960001</div>
                   </div>
                 </div>
-                <div className="bg-gray-700 rounded-lg p-4 mb-4">
-                  <h4 className="font-medium text-white mb-2">Selected Modules:</h4>
+                <div className="bg-slate-100 rounded-lg p-4 mb-4">
+                  <h4 className="font-medium text-slate-800 mb-2">Selected Modules:</h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedModules.map((module, index) => (
-                      <span key={index} className="px-3 py-1 bg-purple-900 text-purple-200 text-sm rounded-full">
+                      <span key={index} className="px-3 py-1 bg-sky-100 text-sky-700 text-sm rounded-full">
                         {module} {currentEvent.module_amounts && currentEvent.module_amounts[module] && `- ${currentEvent.module_amounts[module]}`} pkr
                       </span>
                     ))}
@@ -623,12 +623,12 @@ const Events = () => {
                             type="text"
                             value={discountCodes[mod] || ""}
                             onChange={e => setDiscountCodes(prev => ({ ...prev, [mod]: e.target.value }))}
-                            className="px-2 py-1 rounded bg-gray-900 border border-gray-700 text-white"
+                            className="px-2 py-1 rounded bg-slate-200 border border-slate-300 text-slate-800"
                             placeholder="Enter code"
                           />
                           <button
                             type="button"
-                            className="px-3 py-1 bg-blue-600 text-white rounded"
+                            className="px-3 py-1 bg-sky-600 text-white rounded"
                             onClick={() => handleDiscountCodeValidate(mod)}
                           >
                             Validate
@@ -644,7 +644,7 @@ const Events = () => {
                     ))}
                   </div>
                   <div className="mt-4">
-                    <p className="text-white text-sm font-semibold">Total Amount: {totalAmount} pkr</p>
+                    <p className="text-slate-800 text-sm font-semibold">Total Amount: {totalAmount} pkr</p>
                     <p className="text-pink-400 text-lg font-bold">Payable Amount: {discountedAmount} pkr</p>
                   </div>
                 </div>
@@ -652,22 +652,22 @@ const Events = () => {
                   {/* Removed old single discount code input. Use per-module discount above. */}
                 </div>
                 <div>
-                  <label className="block text-gray-400 mb-2 text-sm">Transaction ID *</label>
+                  <label className="block text-slate-500 mb-2 text-sm">Transaction ID *</label>
                   <input
                     type="text"
                     value={paymentData.transactionId}
                     onChange={(e) => setPaymentData({...paymentData, transactionId: e.target.value})}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+                    className="w-full bg-slate-100 border border-slate-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500 text-slate-800"
                     placeholder="Enter your transaction ID"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-400 mb-2 text-sm">Payment Receipt (Max 2MB) *</label>
+                  <label className="block text-slate-500 mb-2 text-sm">Payment Receipt (Max 2MB) *</label>
                   <div className="flex items-center justify-center w-full">
-                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-600 rounded-lg cursor-pointer bg-gray-700 hover:bg-gray-650 transition-colors">
+                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-200 rounded-lg cursor-pointer bg-slate-100 hover:bg-gray-650 transition-colors">
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <DocumentArrowUpIcon className="w-8 h-8 mb-3 text-gray-400" />
-                        <p className="mb-2 text-sm text-gray-400">
+                        <DocumentArrowUpIcon className="w-8 h-8 mb-3 text-slate-500" />
+                        <p className="mb-2 text-sm text-slate-500">
                           {paymentData.receiptName || (
                             <>
                               <span className="font-semibold">Click to upload</span> or drag and drop
@@ -689,7 +689,7 @@ const Events = () => {
                 <div className="flex justify-between space-x-3 mt-6">
                   <button
                     onClick={() => setFormStep(2)}
-                    className="px-4 py-2 bg-gray-700 rounded-lg text-white font-medium text-sm"
+                    className="px-4 py-2 bg-slate-100 rounded-lg text-slate-800 font-medium text-sm"
                   >
                     Back
                   </button>
@@ -698,13 +698,13 @@ const Events = () => {
   disabled={!paymentData.receipt || !paymentData.transactionId || isProcessing}
   className={`px-4 py-2 rounded-lg font-medium text-sm ${
     !paymentData.receipt || !paymentData.transactionId || isProcessing
-      ? "bg-gray-700 text-gray-500 cursor-not-allowed"
-      : "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:opacity-90"
+      ? "bg-slate-100 text-gray-500 cursor-not-allowed"
+      : "bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:opacity-90"
   }`}
 >
   {isProcessing ? (
     <span className="flex items-center justify-center">
-      <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <svg className="animate-spin h-5 w-5 mr-2 text-slate-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
       </svg>

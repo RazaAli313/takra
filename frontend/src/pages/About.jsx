@@ -70,9 +70,9 @@ const About = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-blue-900 text-white py-20 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500 mx-auto mb-4"></div>
           <p>Loading content...</p>
         </div>
       </div>
@@ -81,13 +81,10 @@ const About = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-blue-900 text-white py-20 flex items-center justify-center">
-        <div className="text-center p-6 bg-red-900/20 border border-red-700 rounded-lg max-w-md">
-          <p className="text-red-400 text-xl mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-blue-600 rounded-lg text-white font-medium hover:bg-blue-700 transition-colors"
-          >
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20 flex items-center justify-center">
+        <div className="text-center p-6 bg-white border border-slate-200 rounded-lg max-w-md shadow-lg">
+          <p className="text-red-500 text-xl mb-4">{error}</p>
+          <button onClick={() => window.location.reload()} className="px-4 py-2 bg-sky-500 text-white rounded-lg font-medium hover:bg-sky-600 transition-colors">
             Retry
           </button>
         </div>
@@ -96,7 +93,7 @@ const About = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-blue-900 text-white py-20">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20">
       <div className="container mx-auto px-6">
         <motion.div
           variants={itemVariants}
@@ -105,7 +102,7 @@ const About = () => {
           className="text-center mb-16"
         >
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-500">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-blue-600">
               About Us
             </span>
           </h1>
@@ -123,7 +120,7 @@ const About = () => {
         >
           <motion.div variants={itemVariants}>
             <h2 className="text-3xl font-bold mb-6">Our Story</h2>
-            <p className="text-gray-300 mb-6">
+            <p className="text-slate-600 mb-6">
               Founded in <b>{aboutData.founded_year}</b>, <b>{aboutData.club_name}</b> has grown from a small group of passionate students to a thriving community of over <b>{aboutData.member_count}</b> members. We started with a simple mission: to create a space where technology enthusiasts could learn, collaborate, and innovate together.
             </p>
             <p className="text-gray-300">
@@ -134,7 +131,7 @@ const About = () => {
           <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.01 }}
-            className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 h-96"
+            className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-lg h-96"
           >
             {aboutData.image_url ? (
               <img 
@@ -147,14 +144,14 @@ const About = () => {
                 }}
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gray-700">
+              <div className="w-full h-full flex items-center justify-center bg-slate-100">
                 <div className="text-center p-6">
-                  <div className="text-gray-400 mb-4">
+                  <div className="text-slate-500 mb-4">
                     <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
-                  <p className="text-gray-400">No image uploaded yet</p>
+                  <p className="text-slate-500">No image uploaded yet</p>
                 </div>
               </div>
             )}
@@ -171,7 +168,7 @@ const About = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             What We Offer
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
             Discover the opportunities and experiences that make our club unique
           </p>
         </motion.div>
@@ -190,11 +187,11 @@ const About = () => {
               whileHover={{ y: -5 }}
               className="bg-gray-800 p-6 rounded-xl border border-gray-700 transition-transform"
             >
-              <div className="text-blue-400 mb-4">
+              <div className="text-sky-500 mb-4">
                 {iconComponents[feature.icon]}
               </div>
               <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-              <p className="text-gray-300">{feature.description}</p>
+              <p className="text-slate-600">{feature.description}</p>
             </motion.div>
           ))}
         </motion.div>

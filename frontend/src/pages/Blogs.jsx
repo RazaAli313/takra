@@ -35,9 +35,9 @@ const Blogs = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-blue-900 text-white py-20 flex justify-center items-center">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20 flex justify-center items-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500 mx-auto mb-4"></div>
           <p>Loading posts...</p>
         </div>
       </div>
@@ -46,14 +46,14 @@ const Blogs = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-blue-900 text-white py-20 flex justify-center items-center">
-        <div className="bg-red-900 bg-opacity-30 border border-red-500 text-white px-6 py-4 rounded-lg max-w-md text-center">
-          <ExclamationTriangleIcon className="h-12 w-12 mx-auto mb-3 text-red-400" />
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20 flex justify-center items-center">
+        <div className="bg-white border border-slate-200 text-slate-800 px-6 py-4 rounded-lg max-w-md text-center shadow-lg">
+          <ExclamationTriangleIcon className="h-12 w-12 mx-auto mb-3 text-red-500" />
           <h3 className="font-bold text-lg mb-2">Error Loading Content</h3>
           <p className="mb-4">{error}</p>
           <button 
             onClick={fetchPosts}
-            className="px-4 py-2 bg-teal-600 hover:bg-teal-700 rounded-lg text-white font-medium"
+            className="px-4 py-2 bg-sky-500 hover:bg-sky-600 rounded-lg text-white font-medium"
           >
             Try Again
           </button>
@@ -63,15 +63,15 @@ const Blogs = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-blue-900 text-white py-12 mt-12">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-12 mt-12">
       <div className="container mx-auto px-4 ">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-teal-500">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-blue-600">
               Tech Blogs
             </span>
           </h1>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-6">
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-6">
             Insights, tutorials, and thought leadership from our community.
           </p>
           <motion.button

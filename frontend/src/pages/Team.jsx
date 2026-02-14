@@ -22,7 +22,7 @@ const TeamMember = ({ name, role, roles_by_tenure, tenure, image_url, socials, b
     <motion.div
       whileHover={{ scale: 1.02, y: -4 }}
       transition={{ duration: 0.2 }}
-      className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-500/50 transition-all duration-300 flex flex-col h-full shadow-lg hover:shadow-xl"
+      className="bg-white rounded-xl p-6 border border-slate-200 hover:border-sky-200 transition-all duration-300 flex flex-col h-full shadow-lg hover:shadow-sky-50"
     >
       {/* Profile Image */}
       <div className="flex justify-center mb-4">
@@ -30,12 +30,12 @@ const TeamMember = ({ name, role, roles_by_tenure, tenure, image_url, socials, b
           <img 
             src={image_url} 
             alt={name} 
-            className="h-28 w-28 rounded-full object-cover border-4 border-blue-400/50 shadow-lg"
+            className="h-28 w-28 rounded-full object-cover border-4 border-sky-200 shadow-lg"
           />
         ) : (
-          <div className="h-28 w-28 rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center border-4 border-blue-400/50 shadow-lg">
+          <div className="h-28 w-28 rounded-full bg-sky-100 flex items-center justify-center border-4 border-sky-200 shadow-lg">
             <svg 
-              className="h-14 w-14 text-blue-400" 
+              className="h-14 w-14 text-sky-500" 
               fill="none" 
               viewBox="0 0 24 24" 
               stroke="currentColor"
@@ -53,14 +53,14 @@ const TeamMember = ({ name, role, roles_by_tenure, tenure, image_url, socials, b
 
       {/* Name and Role */}
       <div className="text-center mb-4">
-        <h3 className="text-xl font-bold text-white mb-1">{name}</h3>
-        <p className="text-blue-400 text-base font-bold">{displayRole}</p>
+        <h3 className="text-xl font-bold text-slate-800 mb-1">{name}</h3>
+        <p className="text-sky-600 text-base font-bold">{displayRole}</p>
       </div>
 
       {/* Bio */}
       {bio && (
         <div className="flex-grow mb-4 min-h-[3.5rem]">
-          <p className="text-gray-300 text-sm leading-relaxed line-clamp-3 text-center">
+          <p className="text-slate-600 text-sm leading-relaxed line-clamp-3 text-center">
             {bio}
           </p>
         </div>
@@ -70,13 +70,13 @@ const TeamMember = ({ name, role, roles_by_tenure, tenure, image_url, socials, b
       {!bio && <div className="flex-grow"></div>}
 
       {/* Social Links */}
-      <div className="flex justify-center items-center space-x-4 pt-4 border-t border-gray-700/50">
+      <div className="flex justify-center items-center space-x-4 pt-4 border-t border-slate-200">
         {socials?.linkedin && (
           <a 
             href={socials.linkedin} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-blue-400 hover:text-blue-300 transition-colors duration-200 p-2 rounded-full hover:bg-blue-500/10"
+            className="text-sky-500 hover:text-sky-600 transition-colors duration-200 p-2 rounded-full hover:bg-sky-100"
             aria-label="LinkedIn"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -89,7 +89,7 @@ const TeamMember = ({ name, role, roles_by_tenure, tenure, image_url, socials, b
             href={socials.github} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-300 hover:text-white transition-colors duration-200 p-2 rounded-full hover:bg-gray-700/50"
+            className="text-slate-500 hover:text-sky-600 transition-colors duration-200 p-2 rounded-full hover:bg-sky-100"
             aria-label="GitHub"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -102,7 +102,7 @@ const TeamMember = ({ name, role, roles_by_tenure, tenure, image_url, socials, b
             href={socials.portfolio} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-300 hover:text-white transition-colors duration-200 p-2 rounded-full hover:bg-gray-700/50"
+            className="text-slate-500 hover:text-sky-600 transition-colors duration-200 p-2 rounded-full hover:bg-sky-100"
             aria-label="Portfolio"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -115,7 +115,7 @@ const TeamMember = ({ name, role, roles_by_tenure, tenure, image_url, socials, b
             href={socials.twitter} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-blue-300 hover:text-blue-200 transition-colors duration-200 p-2 rounded-full hover:bg-blue-500/10"
+            className="text-sky-500 hover:text-sky-600 transition-colors duration-200 p-2 rounded-full hover:bg-sky-100"
             aria-label="Twitter"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -215,14 +215,14 @@ const Team = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-gray-900 to-indigo-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-indigo-900 text-white py-20">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -231,7 +231,7 @@ const Team = () => {
           className="text-center mb-16"
         >
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-blue-500">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-blue-600">
               Our Team
             </span>
           </h1>
@@ -256,8 +256,8 @@ const Team = () => {
                     onClick={() => setSelectedTenure('All')}
                     className={`px-6 py-2 rounded-full font-medium transition-all ${
                       selectedTenure === 'All'
-                        ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg'
-                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
+                        ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg'
+                        : 'bg-slate-100 text-slate-600 hover:bg-sky-50 border border-slate-200'
                     }`}
                   >
                     All Teams
@@ -271,8 +271,8 @@ const Team = () => {
                     onClick={() => setSelectedTenure(tenure)}
                     className={`px-6 py-2 rounded-full font-medium transition-all ${
                       selectedTenure === tenure
-                        ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg'
-                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
+                        ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg'
+                        : 'bg-slate-100 text-slate-600 hover:bg-sky-50 border border-slate-200'
                     }`}
                   >
                     {tenure === 'Unknown' ? 'Other' : tenure}

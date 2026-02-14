@@ -82,21 +82,18 @@ const Contact = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-purple-900 text-white py-20 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-purple-900 text-white py-20 flex items-center justify-center">
-        <div className="text-center p-6 bg-red-900/20 border border-red-700 rounded-lg max-w-md">
-          <p className="text-red-400 text-xl mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-purple-600 rounded-lg text-white font-medium hover:bg-purple-700 transition"
-          >
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20 flex items-center justify-center">
+        <div className="text-center p-6 bg-white border border-slate-200 rounded-lg max-w-md shadow-lg">
+          <p className="text-red-500 text-xl mb-4">{error}</p>
+          <button onClick={() => window.location.reload()} className="px-4 py-2 bg-sky-500 text-white rounded-lg font-medium hover:bg-sky-600 transition">
             Retry
           </button>
         </div>
@@ -105,7 +102,7 @@ const Contact = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-purple-900 text-white py-20">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 py-20">
       <div className="container mx-auto px-6">
         <motion.div
           variants={itemVariants}
@@ -114,7 +111,7 @@ const Contact = () => {
           className="text-center mb-16"
         >
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-blue-600">
               Contact Us
             </span>
           </h1>
@@ -129,41 +126,41 @@ const Contact = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            className="bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-lg"
+            className="bg-white p-8 rounded-xl border border-slate-200 shadow-lg"
           >
             <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-6">Send us a message</motion.h2>
             <form className="space-y-6" onSubmit={handleSubmit}>
               <motion.div variants={itemVariants}>
-                <label htmlFor="name" className="block mb-2 text-gray-300">Your Name</label>
+                <label htmlFor="name" className="block mb-2 text-slate-600">Your Name</label>
                 <input
                   type="text"
                   id="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white transition-colors"
+                  className="w-full bg-slate-100 border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500 text-slate-800 transition-colors"
                 />
               </motion.div>
               <motion.div variants={itemVariants}>
-                <label htmlFor="email" className="block mb-2 text-gray-300">Email Address</label>
+                <label htmlFor="email" className="block mb-2 text-slate-600">Email Address</label>
                 <input
                   type="email"
                   id="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white transition-colors"
+                  className="w-full bg-slate-100 border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500 text-slate-800 transition-colors"
                 />
               </motion.div>
               <motion.div variants={itemVariants}>
-                <label htmlFor="message" className="block mb-2 text-gray-300">Your Message</label>
+                <label htmlFor="message" className="block mb-2 text-slate-600">Your Message</label>
                 <textarea
                   id="message"
                   rows="5"
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white transition-colors"
+                  className="w-full bg-slate-100 border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500 text-slate-800 transition-colors"
                 ></textarea>
               </motion.div>
               <motion.button
@@ -171,7 +168,7 @@ const Contact = () => {
                 type="submit"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 py-3 rounded-lg font-semibold text-white transition-all duration-150"
+                className="w-full bg-gradient-to-r from-sky-500 to-blue-600 py-3 rounded-lg font-semibold text-white transition-all duration-150 shadow-sm"
               >
                 Send Message
               </motion.button>
@@ -196,35 +193,35 @@ const Contact = () => {
           >
             <motion.div 
               variants={itemVariants}
-              className="bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-lg"
+              className="bg-white p-8 rounded-xl border border-slate-200 shadow-lg"
             >
               <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
               <div className="space-y-6">
                 <div className="flex items-start">
-                  <div className="text-purple-400 mr-4 mt-1">
+                  <div className="text-sky-500 mr-4 mt-1">
                     <EnvelopeIcon className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1 text-gray-300">Email</h3>
-                    <p className="text-gray-300">{contactInfo.email}</p>
+                    <h3 className="font-semibold mb-1 text-slate-600">Email</h3>
+                    <p className="text-slate-600">{contactInfo.email}</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <div className="text-purple-400 mr-4 mt-1">
+                  <div className="text-sky-500 mr-4 mt-1">
                     <PhoneIcon className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1 text-gray-300">Phone</h3>
-                    <p className="text-gray-300">{contactInfo.phone}</p>
+                    <h3 className="font-semibold mb-1 text-slate-600">Phone</h3>
+                    <p className="text-slate-600">{contactInfo.phone}</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <div className="text-purple-400 mr-4 mt-1">
+                  <div className="text-sky-500 mr-4 mt-1">
                     <MapPinIcon className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1 text-gray-300">Address</h3>
-                    <p className="text-gray-300 whitespace-pre-line">{contactInfo.address}</p>
+                    <h3 className="font-semibold mb-1 text-slate-600">Address</h3>
+                    <p className="text-slate-600 whitespace-pre-line">{contactInfo.address}</p>
                   </div>
                 </div>
               </div>
@@ -233,7 +230,7 @@ const Contact = () => {
             <motion.div
               variants={itemVariants}
               whileHover={{ scale: 1.01 }}
-              className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 h-64 shadow-lg"
+              className="bg-white rounded-xl overflow-hidden border border-slate-200 h-64 shadow-lg"
             >
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3402.589422330943!2d74.265199!3d31.4804787!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391903ccac08143b%3A0x9b0637753efd261e!2sPUCIT-New%20Campus!5e0!3m2!1sen!2s!4v1750514492353!5m2!1sen!2s"
