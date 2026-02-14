@@ -224,15 +224,31 @@ const NavbarContent = () => {
                 </motion.div>
               ))}
               {isAuthenticated ? (
-                <motion.div whileTap={{ scale: 0.95 }}>
-                  <button
-                    type="button"
-                    onClick={handleSignOut}
-                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:bg-sky-50 hover:text-sky-600"
-                  >
-                    Logout
-                  </button>
-                </motion.div>
+                <>
+                  <motion.div whileTap={{ scale: 0.95 }}>
+                    <Link
+                      to="/profile"
+                      className="flex items-center gap-2 px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:bg-sky-50 hover:text-sky-600"
+                      onClick={() => setOpen(false)}
+                    >
+                      {profile?.imageUrl ? (
+                        <img src={profile.imageUrl} alt="" className="w-8 h-8 rounded-full object-cover" />
+                      ) : (
+                        <UserCircleIcon className="h-6 w-6 text-sky-500" />
+                      )}
+                      Profile
+                    </Link>
+                  </motion.div>
+                  <motion.div whileTap={{ scale: 0.95 }}>
+                    <button
+                      type="button"
+                      onClick={() => { setOpen(false); handleSignOut(); }}
+                      className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:bg-sky-50 hover:text-sky-600"
+                    >
+                      Logout
+                    </button>
+                  </motion.div>
+                </>
               ) : (
                 <motion.div whileTap={{ scale: 0.95 }}>
                   <Link
